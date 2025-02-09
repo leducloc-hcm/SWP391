@@ -13,12 +13,9 @@ import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
 import { addToCartList } from '../../../redux/store/cartList'
 import { motion } from 'framer-motion'
-import { FaSpinner } from 'react-icons/fa'
+import { useQuery } from '@tanstack/react-query'
 function Recommendations() {
-  const [isLoading, setIsLoading] = useState(false)
   const { isDarkMode } = useDarkMode()
-  const [category, setCategory] = useState([])
-  const [product, setProduct] = useState([])
   const [selectCategory, setSelectCategory] = useState('all')
   const [sort, setSort] = useState('newest')
   const [search, setSearch] = useState('')
@@ -80,58 +77,36 @@ function Recommendations() {
     dispatch(addToCartList(product))
   }
 
-  const navigate = useNavigate()
-
-  const getCategory = async () => {
-    try {
+  const { data: product } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
       const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/categories/all', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      setCategory(res.data.data)
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          localStorage.removeItem('token')
-          localStorage.removeItem('id')
-          toast.error('Token expired navigate to login')
-          navigate('/login')
-        } else {
-          console.error('Error fetching ponds:', error.response?.status, error.message)
-        }
-      } else {
-        console.error('An unexpected error occurred:', error)
-      }
-    }
-  }
-
-  const getProduct = async () => {
-    setIsLoading(true)
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
       const response = await axios.get('https://koicaresystemv2.azurewebsites.net/api/products/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setProduct(response.data.data)
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+      console.log(response.data)
+      return response.data.data
+    },
+    keepPreviousData: true,
+    staleTime: 60000
+  })
+
+  const { data: category } = useQuery({
+    queryKey: ['category'],
+    queryFn: async () => {
+      const token = localStorage.getItem('token')
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/categories/all', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      return res.data.data
+    },
+    keepPreviousData: true,
+    staleTime: 60000
+  })
 
   const getCartId = async () => {
     try {
@@ -157,14 +132,6 @@ function Recommendations() {
     getCartId()
   }, [])
 
-  useEffect(() => {
-    getProduct()
-  }, [])
-
-  useEffect(() => {
-    getCategory()
-  }, [])
-
   const handleChange = (categoryId) => {
     setSelectCategory(categoryId)
   }
@@ -180,7 +147,7 @@ function Recommendations() {
     setRating(selectedRating)
   }
 
-  const searchProduct = product
+  const searchProduct = (product || [])
     .filter((products) => {
       const matchesCategory = selectCategory === 'all' || products.category.id === selectCategory
       const matchesSearch = products.name.toLowerCase().includes(search.toLowerCase())
@@ -279,7 +246,7 @@ function Recommendations() {
                       All
                     </div>
 
-                    {category.map((categories) => (
+                    {(category || []).map((categories) => (
                       <div key={categories.id}>
                         <div
                           onClick={() => handleChange(categories.id)}
@@ -701,7 +668,7 @@ function Recommendations() {
                     All
                   </div>
 
-                  {category.map((categories) => (
+                  {(category || []).map((categories) => (
                     <div key={categories.id}>
                       <div
                         onClick={() => handleChange(categories.id)}
@@ -866,11 +833,6 @@ function Recommendations() {
           </div>
         </div>
       </div>
-      {isLoading && (
-        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-          <FaSpinner className='animate-spin text-green-500 text-6xl' />
-        </div>
-      )}
     </div>
   )
 }
