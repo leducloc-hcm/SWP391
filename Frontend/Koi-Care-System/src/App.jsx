@@ -2,94 +2,96 @@
 import { useRoutes } from 'react-router-dom'
 import path from './constants/path'
 import { ToastContainer } from 'react-toastify'
-import Home from './pages/Home/Home'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
-import Member from './pages/Member/Member'
-import Shop from './pages/Shop/Shop'
-import Dashboard from './pages/Member/Dashboard/Dashboard'
-import MyKoi from './pages/Member/MyKoi/MyKoi'
-import WaterParameters from './pages/Member/WaterParameters/WaterParameters'
-import Reminders from './pages/Member/Reminders/Reminders'
-import Recommendations from './pages/Member/Recommendations/Recommendations'
-import FoodCalculator from './pages/Member/FoodCalculator/FoodCalculator'
-import SaltCalculator from './pages/Member/SaltCalculator/SaltCalculator'
-import Statistics from './pages/Member/Statistics/Statistics'
-import News from './pages/Member/News/News'
-import MyAccount from './pages/Member/MyAccount/MyAccount'
-import Profile from './pages/Member/MyAccount/Profile/Profile'
-import OrderMember from './pages/Member/MyAccount/Order/Order'
-import MyPond from './pages/Member/MyPond/MyPond'
-import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
-import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
 import { DarkModeProvider } from './hooks/DarkModeContext'
-import Policy from './pages/Policy/Policy'
-import NewsDetail from './pages/Member/News/NewsDetail'
-import Email from './pages/RecoveryPassword/Email'
-import OTP from './pages/OTP/OTP'
-import ResetPassword from './pages/ResetPassword/ResetPassword'
-import KoiDetail from './pages/Member/MyKoi/KoiDetail'
-import About from './pages/Member/About/About'
-import RecommendationDetail from './pages/Member/Recommendations/RecommendationDetail'
-import MyPondLog from './pages/Member/MyPond/MyPondLog'
-import ShopNews from './pages/Shop/News/ShopNews'
-import CreateNews from './pages/Shop/News/CreateNews'
-import UpdateNews from './pages/Shop/News/UpdateNews'
-import ViewNews from './pages/Shop/News/ViewNews'
-import Tag from './pages/Shop/Tag/Tag'
 import './index.css'
-import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
-import WishList from './pages/Member/WishList/WishList'
-import CartList from './pages/Member/CartList/CartList'
-import CreateTag from './pages/Shop/Tag/CreateTag'
-import UpdateTag from './pages/Shop/Tag/UpdateTag'
-import Supplier from './pages/Shop/Supplier/Supplier'
-import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
-import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
-import Checkout from './pages/Member/Recommendations/Checkout'
-import Promotion from './pages/Shop/Promotion/Promotion'
-import CreatePromotion from './pages/Shop/Promotion/CreatePromotion'
-import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
-import Product from './pages/Shop/Product/Product'
-import CreateProduct from './pages/Shop/Product/CreateProduct'
-import UpdateProduct from './pages/Shop/Product/UpdateProduct'
-import Category from './pages/Shop/Category/Category'
-import CreateCategory from './pages/Shop/Category/CreateCategory'
-import UpdateCategory from './pages/Shop/Category/UpdateCategory'
-import ViewProduct from './pages/Shop/Product/ViewProduct'
-import Payment from './pages/Member/Recommendations/Payment'
+import { lazy, Suspense } from 'react'
 import ProtectedRoute from './ProtectedRoute'
-import PromotionAD from './pages/Admin/Promotion/Promotion'
-import Admin from './pages/Admin/Admin'
-import ProductImage from './pages/Shop/ProductImage/ProductImage'
-import CreateImage from './pages/Shop/ProductImage/CreateImage'
-import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
-import ViewUser from './pages/Shop/User/ViewUser'
-import Pricing from './components/Pricing/Pricing'
-import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
-import PaymentError from './pages/Member/Recommendations/PaymentError'
-import ShopAD from './pages/Admin/ManageUsers/ShopAD'
-import CustomerAD from './pages/Admin/ManageUsers/CustomerAD'
-import ViewUserAD from './pages/Admin/ManageUsers/ViewUserAD'
-import MyPondIssue from './pages/Member/MyPond/MyPondIssue'
-import UserDetail from './pages/Shop/User/UserDetail'
-import OrderShop from './pages/Shop/Order/Order'
-import PaymentShop from './pages/Shop/Payment/Payment'
-import DashboardShop from './pages/Shop/Dashboard/Dashboard'
-import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
-import UpdateUserAD from './pages/Admin/ManageUsers/UpdateUserAD'
-import DashboardAD from './pages/Admin/DashBoard/DashboardAD'
-import ManageOrder from './pages/Admin/ManageReport/ManageOrder'
-import ProductAD from './pages/Admin/Product/ProductAD'
-import SupplierAD from './pages/Admin/Supplier/SupplierAD'
-import ViewProductAD from './pages/Admin/Product/ViewProductAD'
-import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
-import CreateProductAD from './pages/Admin/Product/CreateProductAD'
-import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
-import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
-import ManagePay from './pages/Admin/ManageReport/ManagePay'
-import NewsAD from './pages/Admin/News/NewsAD'
-import NewsView from './pages/Admin/News/NewsView'
+
+const Login = lazy(() => import('./pages/Login/Login'))
+const Home = lazy(() => import('./pages/Home/Home'))
+const Register = lazy(() => import('./pages/Register/Register'))
+const Policy = lazy(() => import('./pages/Policy/Policy'))
+const VerifyEmail = lazy(() => import('./pages/VerifyEmail/VerifyEmail'))
+const VerifySuccess = lazy(() => import('./pages/Register/Register'))
+const Email = lazy(() => import('./pages/RecoveryPassword/Email'))
+const OTP = lazy(() => import('./pages/OTP/OTP'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword/ResetPassword'))
+const Member = lazy(() => import('./pages/Member/Member'))
+const Shop = lazy(() => import('./pages/Shop/Shop'))
+const Dashboard = lazy(() => import('./pages/Member/Dashboard/Dashboard'))
+const MyKoi = lazy(() => import('./pages/Member/MyKoi/MyKoi'))
+const KoiDetail = lazy(() => import('./pages/Member/MyKoi/KoiDetail'))
+const WaterParameters = lazy(() => import('./pages/Member/WaterParameters/WaterParameters'))
+const Reminders = lazy(() => import('./pages/Member/Reminders/Reminders'))
+const Recommendations = lazy(() => import('./pages/Member/Recommendations/Recommendations'))
+const RecommendationDetail = lazy(() => import('./pages/Member/Recommendations/RecommendationDetail'))
+const FoodCalculator = lazy(() => import('./pages/Member/FoodCalculator/FoodCalculator'))
+const SaltCalculator = lazy(() => import('./pages/Member/SaltCalculator/SaltCalculator'))
+const Statistics = lazy(() => import('./pages/Member/Statistics/Statistics'))
+const News = lazy(() => import('./pages/Member/News/News'))
+const NewsDetail = lazy(() => import('./pages/Member/News/NewsDetail'))
+const MyAccount = lazy(() => import('./pages/Member/MyAccount/MyAccount'))
+const Profile = lazy(() => import('./pages/Member/MyAccount/Profile/Profile'))
+const About = lazy(() => import('./pages/Member/About/About'))
+const MyPond = lazy(() => import('./pages/Member/MyPond/MyPond'))
+const MyPondLog = lazy(() => import('./pages/Member/MyPond/MyPondLog'))
+const MyPondLogId = lazy(() => import('./pages/Member/MyPond/MyPondLogId'))
+const Admin = lazy(() => import('./pages/Admin/Admin'))
+const Tag = lazy(() => import('./pages/Shop/Tag/Tag'))
+const ShopNews = lazy(() => import('./pages/Shop/News/ShopNews'))
+const CreateNews = lazy(() => import('./pages/Shop/News/CreateNews'))
+const UpdateNews = lazy(() => import('./pages/Shop/News/UpdateNews'))
+const ViewNews = lazy(() => import('./pages/Shop/News/ViewNews'))
+const WishList = lazy(() => import('./pages/Member/WishList/WishList'))
+const CartList = lazy(() => import('./pages/Member/CartList/CartList'))
+const OrderMember = lazy(() => import('./pages/Member/MyAccount/Order/Order'))
+const CreateTag = lazy(() => import('./pages/Shop/Tag/CreateTag'))
+const UpdateTag = lazy(() => import('./pages/Shop/Tag/UpdateTag'))
+const Supplier = lazy(() => import('./pages/Shop/Supplier/Supplier'))
+const CreateSupplier = lazy(() => import('./pages/Shop/Supplier/CreateSupplier'))
+const UpdateSupplier = lazy(() => import('./pages/Shop/Supplier/UpdateSupplier'))
+const Checkout = lazy(() => import('./pages/Member/Recommendations/Checkout'))
+const Promotion = lazy(() => import('./pages/Shop/Promotion/Promotion'))
+const CreatePromotion = lazy(() => import('./pages/Shop/Promotion/CreatePromotion'))
+const UpdatePromotion = lazy(() => import('./pages/Shop/Promotion/UpdatePromotion'))
+const Product = lazy(() => import('./pages/Shop/Product/Product'))
+const CreateProduct = lazy(() => import('./pages/Shop/Product/CreateProduct'))
+const UpdateProduct = lazy(() => import('./pages/Shop/Product/UpdateProduct'))
+const Category = lazy(() => import('./pages/Shop/Category/Category'))
+const CreateCategory = lazy(() => import('./pages/Shop/Category/CreateCategory'))
+const UpdateCategory = lazy(() => import('./pages/Shop/Category/UpdateCategory'))
+const ViewProduct = lazy(() => import('./pages/Shop/Product/ViewProduct'))
+const Payment = lazy(() => import('./pages/Member/Recommendations/Payment'))
+const PromotionAD = lazy(() => import('./pages/Admin/Promotion/Promotion'))
+const ProductImage = lazy(() => import('./pages/Shop/ProductImage/ProductImage'))
+const CreateImage = lazy(() => import('./pages/Shop/ProductImage/CreateImage'))
+const UpdateImage = lazy(() => import('./pages/Shop/ProductImage/UpdateImage'))
+const ViewUser = lazy(() => import('./pages/Shop/User/ViewUser'))
+const Pricing = lazy(() => import('./components/Pricing/Pricing'))
+const PaymentSuccess = lazy(() => import('./pages/Member/Recommendations/PaymentSuccess'))
+const PaymentError = lazy(() => import('./pages/Member/Recommendations/PaymentError'))
+const ShopAD = lazy(() => import('./pages/Admin/ManageUsers/ShopAD'))
+const CustomerAD = lazy(() => import('./pages/Admin/ManageUsers/CustomerAD'))
+const ViewUserAD = lazy(() => import('./pages/Admin/ManageUsers/ViewUserAD'))
+const MyPondIssue = lazy(() => import('./pages/Member/MyPond/MyPondIssue'))
+const UserDetail = lazy(() => import('./pages/Shop/User/UserDetail'))
+const OrderShop = lazy(() => import('./pages/Shop/Order/Order'))
+const PaymentShop = lazy(() => import('./pages/Shop/Payment/Payment'))
+const DashboardShop = lazy(() => import('./pages/Shop/Dashboard/Dashboard'))
+const ProfileShop = lazy(() => import('./pages/Shop/ShopAccount/ProfileShop'))
+const UpdateUserAD = lazy(() => import('./pages/Admin/ManageUsers/UpdateUserAD'))
+const DashboardAD = lazy(() => import('./pages/Admin/DashBoard/DashboardAD'))
+const ManageOrder = lazy(() => import('./pages/Admin/ManageReport/ManageOrder'))
+const ProductAD = lazy(() => import('./pages/Admin/Product/ProductAD'))
+const SupplierAD = lazy(() => import('./pages/Admin/Supplier/SupplierAD'))
+const ViewProductAD = lazy(() => import('./pages/Admin/Product/ViewProductAD'))
+const UpdateProductAD = lazy(() => import('./pages/Admin/Product/UpdateProductAD'))
+const CreateProductAD = lazy(() => import('./pages/Admin/Product/CreateProductAD'))
+const CreateSupplierAD = lazy(() => import('./pages/Admin/Supplier/CreateSupplierAD'))
+const UpdateSupplierAD = lazy(() => import('./pages/Admin/Supplier/UpdateSupplierAD'))
+const ManagePay = lazy(() => import('./pages/Admin/ManageReport/ManagePay'))
+const NewsAD = lazy(() => import('./pages/Admin/News/NewsAD'))
+const NewsView = lazy(() => import('./pages/Admin/News/NewsView'))
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -97,19 +99,35 @@ function App() {
   const routeElements = useRoutes([
     {
       path: path.home,
-      element: <Home />
+      element: (
+        <Suspense>
+          <Home />
+        </Suspense>
+      )
     },
     {
       path: path.login,
-      element: <Login />
+      element: (
+        <Suspense>
+          <Login />
+        </Suspense>
+      )
     },
     {
       path: path.register,
-      element: <Register />
+      element: (
+        <Suspense>
+          <Register />
+        </Suspense>
+      )
     },
     {
       path: path.policy,
-      element: <Policy />
+      element: (
+        <Suspense>
+          <Policy />
+        </Suspense>
+      )
     },
     {
       path: path.verify,
@@ -125,21 +143,35 @@ function App() {
     },
     {
       path: path.otp,
-      element: <OTP />
+      element: (
+        <Suspense>
+          <OTP />
+        </Suspense>
+      )
     },
     {
       path: path.resetPassword,
-      element: <ResetPassword />
+      element: (
+        <Suspense>
+          <ResetPassword />
+        </Suspense>
+      )
     },
     {
       path: path.member,
-      element: <Member />
+      element: (
+        <Suspense>
+          <Member />
+        </Suspense>
+      )
     },
     {
       path: path.myAccount,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyAccount />
+          <Suspense>
+            <MyAccount />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -147,7 +179,9 @@ function App() {
       path: path.profile,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Profile />
+          <Suspense>
+            <Profile />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -155,7 +189,9 @@ function App() {
       path: path.orderMember,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <OrderMember />
+          <Suspense>
+            <OrderMember />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -163,7 +199,9 @@ function App() {
       path: path.dashboard,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Dashboard />
+          <Suspense>
+            <Dashboard />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -171,7 +209,9 @@ function App() {
       path: path.myKoi,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyKoi />
+          <Suspense>
+            <MyKoi />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -179,7 +219,9 @@ function App() {
       path: path.myPond,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyPond />
+          <Suspense>
+            <MyPond />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -187,7 +229,9 @@ function App() {
       path: path.waterParameters,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <WaterParameters />
+          <Suspense>
+            <WaterParameters />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -195,7 +239,9 @@ function App() {
       path: path.reminders,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Reminders />
+          <Suspense>
+            <Reminders />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -203,7 +249,9 @@ function App() {
       path: path.recommendations,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Recommendations />
+          <Suspense>
+            <Recommendations />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -211,7 +259,9 @@ function App() {
       path: path.foodCalculator,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <FoodCalculator />
+          <Suspense>
+            <FoodCalculator />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -219,7 +269,9 @@ function App() {
       path: path.saltCalculator,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <SaltCalculator />
+          <Suspense>
+            <SaltCalculator />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -227,7 +279,9 @@ function App() {
       path: path.statistics,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Statistics />
+          <Suspense>
+            <Statistics />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -235,7 +289,9 @@ function App() {
       path: path.news,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <News />
+          <Suspense>
+            <News />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -243,7 +299,9 @@ function App() {
       path: path.newsDetails,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <NewsDetail />
+          <Suspense>
+            <NewsDetail />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -251,7 +309,9 @@ function App() {
       path: path.koiDetail,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <KoiDetail />
+          <Suspense>
+            <KoiDetail />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -259,7 +319,9 @@ function App() {
       path: path.recommendationDetail,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <RecommendationDetail />
+          <Suspense>
+            <RecommendationDetail />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -267,7 +329,9 @@ function App() {
       path: path.aboutMember,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <About />
+          <Suspense>
+            <About />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -275,7 +339,9 @@ function App() {
       path: path.myPondLog,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyPondLog />
+          <Suspense>
+            <MyPondLog />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -283,7 +349,9 @@ function App() {
       path: path.shop,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Shop />
+          <Suspense>
+            <Shop />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -291,7 +359,9 @@ function App() {
       path: path.admin,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Admin />
+          <Suspense>
+            <Admin />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -299,7 +369,9 @@ function App() {
       path: path.shopNews,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <ShopNews />
+          <Suspense>
+            <ShopNews />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -307,7 +379,9 @@ function App() {
       path: path.createNews,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <CreateNews />
+          <Suspense>
+            <CreateNews />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -315,7 +389,9 @@ function App() {
       path: path.updateNews,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <UpdateNews />
+          <Suspense>
+            <UpdateNews />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -323,7 +399,9 @@ function App() {
       path: path.viewNews,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <ViewNews />
+          <Suspense>
+            <ViewNews />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -331,7 +409,9 @@ function App() {
       path: path.myPondLogDetail,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyPondLogId />
+          <Suspense>
+            <MyPondLogId />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -339,15 +419,9 @@ function App() {
       path: path.tag,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Tag />
-        </ProtectedRoute>
-      )
-    },
-    {
-      path: path.myPondLogDetail,
-      element: (
-        <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyPondLogId />
+          <Suspense>
+            <Tag />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -355,7 +429,9 @@ function App() {
       path: path.wishList,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <WishList />
+          <Suspense>
+            <WishList />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -363,7 +439,9 @@ function App() {
       path: path.cartList,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <CartList />
+          <Suspense>
+            <CartList />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -371,7 +449,9 @@ function App() {
       path: path.payment,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Payment />
+          <Suspense>
+            <Payment />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -379,7 +459,9 @@ function App() {
       path: path.paymentSuccess,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <PaymentSuccess />
+          <Suspense>
+            <PaymentSuccess />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -387,7 +469,9 @@ function App() {
       path: path.paymentError,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <PaymentError />
+          <Suspense>
+            <PaymentError />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -395,7 +479,9 @@ function App() {
       path: path.createTag,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <CreateTag />
+          <Suspense>
+            <CreateTag />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -403,7 +489,9 @@ function App() {
       path: path.updateTag,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <UpdateTag />
+          <Suspense>
+            <UpdateTag />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -411,7 +499,9 @@ function App() {
       path: path.supplier,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Supplier />
+          <Suspense>
+            <Supplier />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -419,7 +509,9 @@ function App() {
       path: path.createSupplier,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <CreateSupplier />
+          <Suspense>
+            <CreateSupplier />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -427,7 +519,9 @@ function App() {
       path: path.updateSupplier,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <UpdateSupplier />
+          <Suspense>
+            <UpdateSupplier />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -435,15 +529,9 @@ function App() {
       path: path.checkout,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Checkout />
-        </ProtectedRoute>
-      )
-    },
-    {
-      path: path.myPondLogDetail,
-      element: (
-        <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyPondLogId />
+          <Suspense>
+            <Checkout />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -451,7 +539,9 @@ function App() {
       path: path.myPondIssue,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <MyPondIssue />
+          <Suspense>
+            <MyPondIssue />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -459,7 +549,9 @@ function App() {
       path: path.promotion,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Promotion />
+          <Suspense>
+            <Promotion />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -467,7 +559,9 @@ function App() {
       path: path.createPromotion,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <CreatePromotion />
+          <Suspense>
+            <CreatePromotion />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -475,7 +569,9 @@ function App() {
       path: path.updatePromotion,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <UpdatePromotion />
+          <Suspense>
+            <UpdatePromotion />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -487,7 +583,9 @@ function App() {
       path: path.createProduct,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <CreateProduct />
+          <Suspense>
+            <CreateProduct />
+          </Suspense>
         </ProtectedRoute>
       )
     },
@@ -495,133 +593,321 @@ function App() {
       path: path.updateProduct,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <UpdateProduct />
+          <Suspense>
+            <UpdateProduct />
+          </Suspense>
         </ProtectedRoute>
       )
     },
     {
       path: path.category,
-      element: <Category />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <Category />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createCategory,
-      element: <CreateCategory />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <CreateCategory />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateCategory,
-      element: <UpdateCategory />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <UpdateCategory />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.viewProduct,
-      element: <ViewProduct />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ViewProduct />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.promotionAD,
-      element: <PromotionAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <PromotionAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.productImage,
-      element: <ProductImage />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ProductImage />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createImage,
-      element: <CreateImage />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <CreateImage />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateImage,
-      element: <UpdateImage />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <UpdateImage />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.viewUser,
-      element: <ViewUser />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ViewUser />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.userDetail,
-      element: <UserDetail />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <UserDetail />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.pricing,
-      element: <Pricing />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <Pricing />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.shopAD,
-      element: <ShopAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ShopAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.customerAD,
-      element: <CustomerAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <CustomerAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.viewUserAD,
-      element: <ViewUserAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ViewUserAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.orderShop,
-      element: <OrderShop />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <OrderShop />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.paymentShop,
-      element: <PaymentShop />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <PaymentShop />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.dashboardShop,
-      element: <DashboardShop />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <DashboardShop />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.profileShop,
-      element: <ProfileShop />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ProfileShop />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateUserAD,
-      element: <UpdateUserAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <UpdateUserAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.manageOrder,
-      element: <ManageOrder />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ManageOrder />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.productAD,
-      element: <ProductAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ProductAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.supplierAD,
-      element: <SupplierAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <SupplierAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.dashboardAD,
-      element: <DashboardAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <DashboardAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.viewProductAD,
-      element: <ViewProductAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ViewProductAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateProductAD,
-      element: <UpdateProductAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <UpdateProductAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createProductAD,
-      element: <CreateProductAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <CreateProductAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createSupplierAD,
-      element: <CreateSupplierAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <CreateSupplierAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateSupplierAD,
-      element: <UpdateSupplierAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <UpdateSupplierAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.managePay,
-      element: <ManagePay />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <ManagePay />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.newsAD,
-      element: <NewsAD />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <NewsAD />
+          </Suspense>
+        </ProtectedRoute>
+      )
     },
     {
       path: path.newsView,
-      element: <NewsView />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Suspense>
+            <NewsView />
+          </Suspense>
+        </ProtectedRoute>
+      )
     }
   ])
 
