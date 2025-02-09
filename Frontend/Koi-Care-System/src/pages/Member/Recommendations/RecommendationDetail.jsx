@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useLocation } from 'react-router-dom'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
@@ -29,7 +29,12 @@ function Recommendations() {
   const [comment, setComment] = useState('')
   const [editableFeedback, setEditableFeedback] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
+  const { pathname } = useLocation()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    scrollTo(0, 0)
+  }, [pathname])
 
   const handleAddToCart = (product) => {
     if (productId.inventory < count) {
