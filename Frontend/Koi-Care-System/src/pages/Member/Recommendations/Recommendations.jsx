@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -14,8 +16,6 @@ import '../../../index.css'
 import TopLayout from '../../../layouts/TopLayout'
 import { addToCartList } from '../../../redux/store/cartList'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
