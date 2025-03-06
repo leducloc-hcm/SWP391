@@ -246,7 +246,7 @@ function News() {
                     } mb-4 border rounded-lg shadow-sm duration-200`}
                   >
                     <div className='hover:scale-[102%]'>
-                      <Link to={`/member/news/${blog.blogId}`}>
+                      <Link to={`/member/news/${blog.blogId}`} onMouseEnter={() => import('../News/NewsDetail')}>
                         <div className='relative'>
                           <img
                             src={blog.blogImage}
@@ -367,46 +367,35 @@ function News() {
                     key={index}
                     className={`${
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                    } mb-4 border rounded-lg shadow-sm duration-200 animate-bounce`}
+                    } mb-4 border rounded-lg shadow-sm duration-200`}
                   >
                     <div>
                       <div className='relative'>
-                        <div className='w-full lg:h-72 h-48 object-cover relative rounded-t-lg bg-gray-300' />
-                        {/* Avatar skeleton */}
-                        <div className='w-12 h-12 absolute -bottom-[20px] left-8 rounded-full border border-gray-300 bg-gray-400' />
+                        <Skeleton height={240} className='w-full lg:h-72 h-48 rounded-t-lg' />
+                        <Skeleton circle height={48} width={48} className='absolute -bottom-[20px] left-8 border' />
                       </div>
 
                       <div className='flex justify-center items-center'>
                         <div className='flex gap-2 lg:flex-row flex-col justify-between lg:items-center w-full mt-8 px-6'>
                           <div className='flex gap-3'>
-                            <div
-                              className={`lg:text-lg text-sm flex justify-start px-2 py-1 rounded-xl ${
-                                isDarkMode ? 'bg-custom-layout-dark' : 'bg-gray-300'
-                              } w-16 h-6`}
-                            />
-                            <div
-                              className={`lg:text-lg text-sm flex justify-start px-2 py-1 rounded-xl ${
-                                isDarkMode ? 'bg-custom-layout-dark' : 'bg-gray-300'
-                              } w-16 h-6`}
-                            />
+                            <Skeleton height={24} width={64} className='rounded-xl' />
+                            <Skeleton height={24} width={64} className='rounded-xl' />
                           </div>
-
-                          <div className='font-semibold text-sm bg-gray-300 w-20 h-4 rounded' />
+                          <Skeleton height={16} width={80} className='rounded' />
                         </div>
                       </div>
 
                       <div className='mt-4 px-5 py-2'>
-                        <div className='lg:text-xl text-lg line-clamp-2 bg-gray-300 h-6 w-full rounded mb-2' />
-                        <div className='lg:text-xl text-lg line-clamp-2 bg-gray-300 h-6 w-3/4 rounded' />
+                        <Skeleton height={24} className='w-full rounded mb-2' />
+                        <Skeleton height={24} className='w-3/4 rounded' />
                       </div>
                     </div>
 
                     <div className='p-3 flex w-full justify-between'>
-                      <div className='cursor-pointer flex items-center justify-center p-2 bg-gray-300 flex-none w-10 h-10 rounded-full' />
-
+                      <Skeleton circle height={40} width={40} />
                       <div className='flex gap-2'>
-                        <div className='cursor-pointer flex items-center justify-center p-2 bg-gray-300 flex-none w-10 h-10 rounded-full' />
-                        <div className='cursor-pointer flex items-center justify-center p-2 bg-gray-300 flex-none w-10 h-10 rounded-full' />
+                        <Skeleton circle height={40} width={40} />
+                        <Skeleton circle height={40} width={40} />
                       </div>
                     </div>
                   </motion.div>
