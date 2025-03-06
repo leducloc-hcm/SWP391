@@ -92,7 +92,7 @@ const UpdateSupplierAD = lazy(() => import('./pages/Admin/Supplier/UpdateSupplie
 const ManagePay = lazy(() => import('./pages/Admin/ManageReport/ManagePay'))
 const NewsAD = lazy(() => import('./pages/Admin/News/NewsAD'))
 const NewsView = lazy(() => import('./pages/Admin/News/NewsView'))
-
+const PracticeKanji = lazy(() => import('./pages/Member/Kanji/PracticeKanji'))
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -907,6 +907,14 @@ function App() {
             <NewsView />
           </Suspense>
         </ProtectedRoute>
+      )
+    },
+    {
+      path: path.practiceKanji,
+      element: (
+        <Suspense>
+          <PracticeKanji />
+        </Suspense>
       )
     }
   ])
