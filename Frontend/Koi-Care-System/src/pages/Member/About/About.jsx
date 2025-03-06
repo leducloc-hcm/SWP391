@@ -1,8 +1,8 @@
-import { useDarkMode } from '../../../hooks/DarkModeContext'
+import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
-import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa'
 
 function About() {
   const { isDarkMode } = useDarkMode()

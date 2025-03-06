@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useEffect } from 'react'
 const InfoBox = ({ title, content, showInfo, onClose }) => {
   // Tự động ẩn sau 1.5s nếu cần
   useEffect(() => {

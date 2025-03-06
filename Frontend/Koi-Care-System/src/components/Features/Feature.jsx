@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
-import pond from '../../assets/KoiPond.png'
 import food from '../../assets/FoodCalculator.png'
 import fish from '../../assets/KoiFish.png'
-import statistics from '../../assets/Statistic.png'
+import pond from '../../assets/KoiPond.png'
 import salt from '../../assets/SaltCalculator.png'
+import statistics from '../../assets/Statistic.png'
 import water from '../../assets/WaterParameter.png'
 
 function Feature() {

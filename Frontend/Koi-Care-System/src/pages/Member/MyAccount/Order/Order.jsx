@@ -1,15 +1,13 @@
 import axios from 'axios'
-import Header from '../../../../components/Member/Header'
-import LeftSideBar from '../../../../components/Member/LeftSideBar'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
-import { useDarkMode } from '../../../../hooks/DarkModeContext'
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
-import { FaUser, FaPhoneAlt, FaRegAddressCard } from 'react-icons/fa'
 import { BsFillCalendarDateFill } from 'react-icons/bs'
+import { FaChevronDown, FaChevronUp, FaPhoneAlt, FaRegAddressCard, FaSpinner, FaUser } from 'react-icons/fa'
 import { GrNotes } from 'react-icons/gr'
 import { MdPendingActions } from 'react-icons/md'
-import { FaSpinner } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import Header from '../../../../components/Member/Header'
+import LeftSideBar from '../../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../../hooks/DarkModeContext'
 
 function Order() {
   const { isDarkMode } = useDarkMode()

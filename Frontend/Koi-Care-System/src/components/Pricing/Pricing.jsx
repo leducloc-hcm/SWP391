@@ -1,8 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import Header from '../Member/Header'
 import LeftSideBar from '../Member/LeftSideBar'
-import axios from 'axios'
 
 function Pricing() {
   const { isDarkMode } = useDarkMode()

@@ -1,9 +1,9 @@
-import { useDarkMode } from '../../../hooks/DarkModeContext'
+import { Link } from 'react-router-dom'
+import gif from '../../../assets/payment-complete.gif'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
-import gif from '../../../assets/payment-complete.gif'
-import { Link } from 'react-router-dom'
 
 function PaymentSuccess() {
   const { isDarkMode } = useDarkMode()

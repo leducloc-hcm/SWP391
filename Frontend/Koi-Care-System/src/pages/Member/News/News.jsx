@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Member/Header'
-import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
-import { motion } from 'framer-motion'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 function News() {
   const { isDarkMode } = useDarkMode()
@@ -17,6 +19,9 @@ function News() {
   const [search, setSearch] = useState('')
   const [profiles, setProfiles] = useState([])
   const navigate = useNavigate()
+
+  const skeletonItems = Array(13).fill(0)
+  // console.log('item', typeof blogs.length)
 
   const toggleButtons = () => {
     setShowButtons(!showButtons)
@@ -103,6 +108,7 @@ function News() {
   useEffect(() => {
     getProfile()
   }, [])
+
   const searchBlog = blogs.filter((blog) => blog.blogTitle.toLowerCase().includes(search.toLowerCase()))
 
   const sortBlog = (name, sort) => {
@@ -340,7 +346,72 @@ function News() {
                 ))}
               </motion.div>
             ) : (
-              <div className='text-center text-gray-500 text-lg mt-10'>No Blog found</div>
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
+                  }
+                }}
+                className='py-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:mt-2'
+              >
+                {skeletonItems.map((_, index) => (
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, x: 100 },
+                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                    }}
+                    key={index}
+                    className={`${
+                      isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                    } mb-4 border rounded-lg shadow-sm duration-200 animate-bounce`}
+                  >
+                    <div>
+                      <div className='relative'>
+                        <div className='w-full lg:h-72 h-48 object-cover relative rounded-t-lg bg-gray-300' />
+                        {/* Avatar skeleton */}
+                        <div className='w-12 h-12 absolute -bottom-[20px] left-8 rounded-full border border-gray-300 bg-gray-400' />
+                      </div>
+
+                      <div className='flex justify-center items-center'>
+                        <div className='flex gap-2 lg:flex-row flex-col justify-between lg:items-center w-full mt-8 px-6'>
+                          <div className='flex gap-3'>
+                            <div
+                              className={`lg:text-lg text-sm flex justify-start px-2 py-1 rounded-xl ${
+                                isDarkMode ? 'bg-custom-layout-dark' : 'bg-gray-300'
+                              } w-16 h-6`}
+                            />
+                            <div
+                              className={`lg:text-lg text-sm flex justify-start px-2 py-1 rounded-xl ${
+                                isDarkMode ? 'bg-custom-layout-dark' : 'bg-gray-300'
+                              } w-16 h-6`}
+                            />
+                          </div>
+
+                          <div className='font-semibold text-sm bg-gray-300 w-20 h-4 rounded' />
+                        </div>
+                      </div>
+
+                      <div className='mt-4 px-5 py-2'>
+                        <div className='lg:text-xl text-lg line-clamp-2 bg-gray-300 h-6 w-full rounded mb-2' />
+                        <div className='lg:text-xl text-lg line-clamp-2 bg-gray-300 h-6 w-3/4 rounded' />
+                      </div>
+                    </div>
+
+                    <div className='p-3 flex w-full justify-between'>
+                      <div className='cursor-pointer flex items-center justify-center p-2 bg-gray-300 flex-none w-10 h-10 rounded-full' />
+
+                      <div className='flex gap-2'>
+                        <div className='cursor-pointer flex items-center justify-center p-2 bg-gray-300 flex-none w-10 h-10 rounded-full' />
+                        <div className='cursor-pointer flex items-center justify-center p-2 bg-gray-300 flex-none w-10 h-10 rounded-full' />
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
             )}
           </div>
         </div>

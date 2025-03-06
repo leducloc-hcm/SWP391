@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState, useEffect } from 'react'
-import { FaArrowUp } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
+import { FaArrowLeft, FaArrowUp } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { FaArrowLeft } from 'react-icons/fa'
 function Policy() {
   const [activeSection, setActiveSection] = useState('')
   const [showScrollTop, setShowScrollTop] = useState(false)

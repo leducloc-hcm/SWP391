@@ -1,16 +1,15 @@
-import { Link, useParams, useLocation } from 'react-router-dom'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import '../../../index.css'
 import TopLayout from '../../../layouts/TopLayout'
-import 'react-toastify/dist/ReactToastify.css'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { useEffect, useState } from 'react'
 import { addToCartList } from '../../../redux/store/cartList'
-import { useDispatch } from 'react-redux'
-import '../../../index.css'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
