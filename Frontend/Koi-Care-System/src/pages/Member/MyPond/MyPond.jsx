@@ -3,7 +3,8 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { FaSpinner } from 'react-icons/fa'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -13,8 +14,6 @@ import LeftSideBar from '../../../components/Member/LeftSideBar'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import '../../../index.css'
 import TopLayout from '../../../layouts/TopLayout'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -351,7 +350,7 @@ function MyPond() {
                 d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
               />
             </svg>
-            <Link to='/member/myPond/myPondLog'>
+            <Link to='/member/myPond/myPondLog' onMouseEnter={() => import('../MyPond/MyPondLog')}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -519,7 +518,10 @@ function MyPond() {
                       </div>
                     </div>
                     {issue[pond.id] && issue[pond.id].length > 0 && (
-                      <Link to={`/member/myPond/myPondIssue/${pond.id}`}>
+                      <Link
+                        to={`/member/myPond/myPondIssue/${pond.id}`}
+                        onMouseEnter={() => import('../MyPond/MyPondIssue')}
+                      >
                         <svg
                           fill='#000000'
                           width='800px'
@@ -551,22 +553,36 @@ function MyPond() {
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 gap-4'>
                   {[...Array(6)].map((_, index) => (
                     <motion.div
-                      key={index}
                       variants={{
                         hidden: { opacity: 0, x: 100 },
-                        visible: { opacity: 1, x: 0, transition: { delay: index * 0.2 } }
+                        visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
                       }}
-                      className='border p-4 rounded-lg shadow bg-white'
+                      key={index}
+                      whileHover={{ scale: 1.02 }}
+                      className={`${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      } rounded-xl border duration-300 relative`}
                     >
-                      <div className='text-lg mb-4'>
-                        <Skeleton width='100%' height={200} className='col-span-2' />
-                        <div className='flex flex-col gap-3 w-full'>
-                          {[...Array(3)].map((_, i) => (
-                            <>
-                              <Skeleton width='80%' height={20} className='col-span-2' />
-                              <Skeleton width='80%' height={20} className='col-span-2' />
-                            </>
-                          ))}
+                      <Skeleton height={240} className='w-full lg:h-60 h-48 rounded-t-xl' />
+
+                      <div className='p-4 flex'>
+                        <div className='grid grid-rows-7 w-[30%]'>
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                          <Skeleton className='text-sm lg:text-base w-48 lg:w-56' />
+                        </div>
+                        <div className='grid grid-rows-7'>
+                          <Skeleton width={100} height={16} className='ml-20' />
+                          <Skeleton width={50} height={16} className='ml-20' />
+                          <Skeleton width={50} height={16} className='ml-20' />
+                          <Skeleton width={50} height={16} className='ml-20' />
+                          <Skeleton width={50} height={16} className='ml-20' />
+                          <Skeleton width={50} height={16} className='ml-20' />
+                          <Skeleton width={50} height={16} className='ml-20' />
                         </div>
                       </div>
                     </motion.div>

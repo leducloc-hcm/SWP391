@@ -308,58 +308,106 @@ function MyKoi() {
                   </div>
                 </div>
               </div>
-              <motion.div
-                initial='hidden'
-                animate='visible'
-                variants={{
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.01
+              {kois.length > 0 ? (
+                <motion.div
+                  initial='hidden'
+                  animate='visible'
+                  variants={{
+                    visible: {
+                      transition: {
+                        staggerChildren: 0.01
+                      }
                     }
-                  }
-                }}
-                className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 py-3'
-              >
-                {kois.map((koi, index) => (
-                  <motion.div
-                    variants={{
-                      hidden: { opacity: 0, x: 100 },
-                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.05 } }
-                    }}
-                    key={koi.id}
-                    className={`${
-                      isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                    }  rounded-xl border cursor-pointer`}
-                  >
-                    <Link to={`/member/myKoi/${koi.id}`}>
-                      <div className='flex gap-3 '>
-                        <div className='w-[48%] '>
-                          <img
-                            src={koi.imageUrl}
-                            alt={koi.name}
-                            className='w-full h-32 object-cover rounded-s-xl overflow-hidden'
-                            style={{ objectFit: 'cover', filter: 'brightness(1.1)' }}
-                          />
+                  }}
+                  className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 py-3'
+                >
+                  {kois.map((koi, index) => (
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, x: 100 },
+                        visible: { opacity: 1, x: 0, transition: { delay: index * 0.05 } }
+                      }}
+                      key={koi.id}
+                      className={`${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }  rounded-xl border cursor-pointer`}
+                    >
+                      <Link onMouseEnter={() => import('../MyKoi/KoiDetail')} to={`/member/myKoi/${koi.id}`}>
+                        <div className='flex gap-3 '>
+                          <div className='w-[48%] '>
+                            <img
+                              src={koi.imageUrl}
+                              alt={koi.name}
+                              className='w-full h-32 object-cover rounded-s-xl overflow-hidden'
+                              style={{ objectFit: 'cover', filter: 'brightness(1.1)' }}
+                            />
+                          </div>
+                          <div className=' w-[52%] flex mt-1  '>
+                            <div className='grid grid-rows-4 w-[30%]'>
+                              <h3 className='text-sm '>Name:</h3>
+                              <h3 className='text-sm '>Age: </h3>
+                              <h3 className='text-sm '>Variety:</h3>
+                              <h3 className='text-sm '>Length:</h3>
+                            </div>
+                            <div className='grid grid-rows-4'>
+                              <p className='ml-2 text-sm font-semibold text-nowrap z-50'>{koi.name}</p>
+                              <p className='ml-2 text-sm font-semibold '>{koi.age} years</p>
+                              <p className='ml-2 text-sm font-semibold '>{koi.variety}</p>
+                              <p className='ml-2 text-sm font-semibold '>{koi.length} cm</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className=' w-[52%] flex mt-1  '>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial='hidden'
+                  animate='visible'
+                  variants={{
+                    visible: {
+                      transition: {
+                        staggerChildren: 0.01
+                      }
+                    }
+                  }}
+                  className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 py-3'
+                >
+                  {[...Array(12)].map((_, index) => (
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, x: 100 },
+                        visible: { opacity: 1, x: 0, transition: { delay: index * 0.05 } }
+                      }}
+                      key={index}
+                      className={`${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      } rounded-xl border cursor-pointer`}
+                    >
+                      <div className='flex gap-3'>
+                        <div className='w-[48%]'>
+                          <Skeleton height={128} className='w-full h-32 rounded-s-xl' />
+                        </div>
+                        <div className='w-[52%] flex mt-1'>
                           <div className='grid grid-rows-4 w-[30%]'>
-                            <h3 className='text-sm '>Name:</h3>
-                            <h3 className='text-sm '>Age: </h3>
-                            <h3 className='text-sm '>Variety:</h3>
-                            <h3 className='text-sm '>Length:</h3>
+                            <Skeleton className='text-sm' />
+                            <Skeleton className='text-sm' />
+                            <Skeleton className='text-sm' />
+                            <Skeleton className='text-sm' />
                           </div>
                           <div className='grid grid-rows-4'>
-                            <p className='ml-2 text-sm font-semibold text-nowrap z-50'>{koi.name}</p>
-                            <p className='ml-2 text-sm font-semibold '>{koi.age} years</p>
-                            <p className='ml-2 text-sm font-semibold '>{koi.variety}</p>
-                            <p className='ml-2 text-sm font-semibold '>{koi.length} cm</p>
+                            <Skeleton width={100} height={16} className='ml-2' />
+                            <Skeleton width={80} height={16} className='ml-2' />
+                            <Skeleton width={100} height={16} className='ml-2' />
+                            <Skeleton width={80} height={16} className='ml-2' />
                           </div>
                         </div>
                       </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
             </div>
           </div>
         </div>
@@ -781,12 +829,6 @@ function MyKoi() {
             </form>
           </div>
         </div>
-      )}
-      {isLoading && (
-        // <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-        //   <FaSpinner className='animate-spin text-green-500 text-6xl' />
-        // </div>
-        <Skeleton />
       )}
     </div>
   )
