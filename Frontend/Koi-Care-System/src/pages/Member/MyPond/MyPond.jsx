@@ -1,20 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
+import 'aos/dist/aos.css'
+import axios from 'axios'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Member/Header'
-import LeftSideBar from '../../../components/Member/LeftSideBar'
-import axios, { AxiosError } from 'axios'
-import { set, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayout'
-import { motion } from 'framer-motion'
-import 'aos/dist/aos.css'
-import '../../../index.css'
 import Swal from 'sweetalert2'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
+import '../../../index.css'
+import TopLayout from '../../../layouts/TopLayout'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -451,89 +451,129 @@ function MyPond() {
               </div>
             </div>
 
-            <motion.div
-              initial='hidden'
-              animate='visible'
-              variants={{
-                visible: {
-                  transition: {
-                    staggerChildren: 0.3
+            {ponds.length > 0 ? (
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
                   }
-                }
-              }}
-              className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'
-            >
-              {ponds.map((pond, index) => (
-                <motion.div
-                  variants={{
-                    hidden: { opacity: 0, x: 100 },
-                    visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
-                  }}
-                  key={pond.id}
-                  whileHover={{ scale: 1.02 }}
-                  className={`${
-                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl  border duration-300 relative`}
-                >
-                  <img
-                    onClick={() => {
-                      toggleEditFormVisibility(pond)
-                      reset(pond)
+                }}
+                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'
+              >
+                {ponds.map((pond, index) => (
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, x: 100 },
+                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
                     }}
-                    src={pond.imageUrl}
-                    alt={pond.name}
-                    className='w-full cursor-pointer lg:h-60 h-48 object-cover rounded-t-xl overflow-hidden'
-                    style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
-                  />
-                  <div className='p-4'>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Pond:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>{pond.name}</h3>
+                    key={pond.id}
+                    whileHover={{ scale: 1.02 }}
+                    className={`${
+                      isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                    } rounded-xl  border duration-300 relative`}
+                  >
+                    <img
+                      onClick={() => {
+                        toggleEditFormVisibility(pond)
+                        reset(pond)
+                      }}
+                      src={pond.imageUrl}
+                      alt={pond.name}
+                      className='w-full cursor-pointer lg:h-60 h-48 object-cover rounded-t-xl overflow-hidden'
+                      style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
+                    />
+                    <div className='p-4'>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Pond:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>{pond.name}</h3>
+                      </div>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Number of fish:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>
+                          {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
+                        </h3>{' '}
+                      </div>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Volume:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>{pond.volume} l</h3>
+                      </div>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Drain Count:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>{pond.drainCount}</h3>
+                      </div>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Depth:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>{pond.depth} m</h3>
+                      </div>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Skimmer Count:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>{pond.skimmer}</h3>
+                      </div>
+                      <div className='flex w-full pl-3'>
+                        <h3 className='text-sm lg:text-base w-48 lg:w-56'>Pump Capacity:</h3>
+                        <h3 className='text-sm lg:text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
+                      </div>
                     </div>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Number of fish:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>
-                        {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
-                      </h3>{' '}
-                    </div>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Volume:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>{pond.volume} l</h3>
-                    </div>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Drain Count:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>{pond.drainCount}</h3>
-                    </div>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Depth:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>{pond.depth} m</h3>
-                    </div>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Skimmer Count:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>{pond.skimmer}</h3>
-                    </div>
-                    <div className='flex w-full pl-3'>
-                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Pump Capacity:</h3>
-                      <h3 className='text-sm lg:text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
-                    </div>
-                  </div>
-                  {issue[pond.id] && issue[pond.id].length > 0 && (
-                    <Link to={`/member/myPond/myPondIssue/${pond.id}`}>
-                      <svg
-                        fill='#000000'
-                        width='800px'
-                        height='800px'
-                        viewBox='-8 0 19 19'
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='blinking-svg absolute top-0 text-lg shadow-lg text-white rounded-tl-xl bg-red-500 size-10 lg:size-14 p-2 cursor-pointer'
-                      >
-                        <path d='M2.828 15.984A1.328 1.328 0 1 1 1.5 14.657a1.328 1.328 0 0 1 1.328 1.327zM1.5 13.244a1.03 1.03 0 0 1-1.03-1.03V2.668a1.03 1.03 0 0 1 2.06 0v9.548a1.03 1.03 0 0 1-1.03 1.029z' />
-                      </svg>
-                    </Link>
-                  )}
-                </motion.div>
-              ))}
-            </motion.div>
+                    {issue[pond.id] && issue[pond.id].length > 0 && (
+                      <Link to={`/member/myPond/myPondIssue/${pond.id}`}>
+                        <svg
+                          fill='#000000'
+                          width='800px'
+                          height='800px'
+                          viewBox='-8 0 19 19'
+                          xmlns='http://www.w3.org/2000/svg'
+                          className='blinking-svg absolute top-0 text-lg shadow-lg text-white rounded-tl-xl bg-red-500 size-10 lg:size-14 p-2 cursor-pointer'
+                        >
+                          <path d='M2.828 15.984A1.328 1.328 0 1 1 1.5 14.657a1.328 1.328 0 0 1 1.328 1.327zM1.5 13.244a1.03 1.03 0 0 1-1.03-1.03V2.668a1.03 1.03 0 0 1 2.06 0v9.548a1.03 1.03 0 0 1-1.03 1.029z' />
+                        </svg>
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
+                  }
+                }}
+                className='py-4 w-full z-0'
+              >
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 gap-4'>
+                  {[...Array(6)].map((_, index) => (
+                    <motion.div
+                      key={index}
+                      variants={{
+                        hidden: { opacity: 0, x: 100 },
+                        visible: { opacity: 1, x: 0, transition: { delay: index * 0.2 } }
+                      }}
+                      className='border p-4 rounded-lg shadow bg-white'
+                    >
+                      <div className='text-lg mb-4'>
+                        <Skeleton width='100%' height={200} className='col-span-2' />
+                        <div className='flex flex-col gap-3 w-full'>
+                          {[...Array(3)].map((_, i) => (
+                            <>
+                              <Skeleton width='80%' height={20} className='col-span-2' />
+                              <Skeleton width='80%' height={20} className='col-span-2' />
+                            </>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
 
             {isAddFormVisible && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
@@ -1109,12 +1149,6 @@ function MyPond() {
                     <p className='text-center font-semibold'>Delete this pond</p>
                   </div>
                 </div>
-              </div>
-            )}
-
-            {isLoading && (
-              <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-                <FaSpinner className='animate-spin text-green-500 text-6xl' />
               </div>
             )}
           </div>

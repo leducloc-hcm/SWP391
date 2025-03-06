@@ -1,24 +1,23 @@
 /* eslint-disable no-unused-vars */
 
+import 'aos/dist/aos.css'
+import axios from 'axios'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import Header from '../../../components/Member/Header'
-import LeftSideBar from '../../../components/Member/LeftSideBar'
-import axios, { AxiosError } from 'axios'
-import { set, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { FaInfoCircle } from 'react-icons/fa'
-import AOS from 'aos'
-import { Link, useNavigate } from 'react-router-dom'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayout'
-import InfoBox from '../../../components/WaterParam/InfoBox'
-import { motion } from 'framer-motion'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
-import 'aos/dist/aos.css'
-import { FaSpinner } from 'react-icons/fa'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
-import * as XLSX from 'xlsx'
 import Swal from 'sweetalert2'
+import * as XLSX from 'xlsx'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import InfoBox from '../../../components/WaterParam/InfoBox'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
+import TopLayout from '../../../layouts/TopLayout'
+
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
@@ -991,293 +990,369 @@ function WaterParameters() {
                 </div>
               </div>
             </div>
-            <motion.div
-              initial='hidden'
-              animate='visible'
-              variants={{
-                visible: {
-                  transition: {
-                    staggerChildren: 0.3
+            {paginatedParameters.length > 0 ? (
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
                   }
-                }
-              }}
-              className='py-4 w-full z-0'
-            >
-              <div className='flex justify-end mb-4'>
-                <label htmlFor='pageSize' className='mr-2'>
-                  Items per page:
-                </label>
-                <select
-                  id='pageSize'
-                  value={pageSize}
-                  onChange={(e) => setPageSize(parseInt(e.target.value))}
-                  className={`p-1 ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} border rounded`}
-                >
-                  <option value={2}>2</option>
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={15}>15</option>
-                </select>
-              </div>
-              <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-4'>
-                {paginatedParameters.map((parameter, index) => {
-                  // Đếm số lượng các giá trị vượt ngưỡng (màu đỏ)
-                  const getRedCount = (parameter) => {
-                    let count = 0
-                    if (parameter.nitrite > 0.3) count++
-                    if (parameter.nitrate > 80) count++
-                    if (parameter.phosphate > 1) count++
-                    if (parameter.ammonium > 1) count++
-                    if (parameter.hardness > 50) count++
-                    if (parameter.oxygen <= 6) count++
-                    if (parameter.temperature < 4 || parameter.temperature > 26) count++
-                    if (parameter.phValue < 6.9 || parameter.phValue > 8) count++
-                    if (parameter.carbonHardness < 1 || parameter.carbonHardness > 50) count++
-                    if (parameter.carbonDioxide < 4 || parameter.carbonDioxide > 35) count++
-                    if (parameter.salt > 0.6) count++
-                    if (parameter.totalChlorine > 0.02) count++
-                    return count
+                }}
+                className='py-4 w-full z-0'
+              >
+                <div className='flex justify-end mb-4'>
+                  <label htmlFor='pageSize' className='mr-2'>
+                    Items per page:
+                  </label>
+                  <select
+                    id='pageSize'
+                    value={pageSize}
+                    onChange={(e) => setPageSize(parseInt(e.target.value))}
+                    className={`p-1 ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} border rounded`}
+                  >
+                    <option value={2}>2</option>
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                  </select>
+                </div>
+                <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-4'>
+                  {paginatedParameters.map((parameter, index) => {
+                    // Đếm số lượng các giá trị vượt ngưỡng (màu đỏ)
+                    const getRedCount = (parameter) => {
+                      let count = 0
+                      if (parameter.nitrite > 0.3) count++
+                      if (parameter.nitrate > 80) count++
+                      if (parameter.phosphate > 1) count++
+                      if (parameter.ammonium > 1) count++
+                      if (parameter.hardness > 50) count++
+                      if (parameter.oxygen <= 6) count++
+                      if (parameter.temperature < 4 || parameter.temperature > 26) count++
+                      if (parameter.phValue < 6.9 || parameter.phValue > 8) count++
+                      if (parameter.carbonHardness < 1 || parameter.carbonHardness > 50) count++
+                      if (parameter.carbonDioxide < 4 || parameter.carbonDioxide > 35) count++
+                      if (parameter.salt > 0.6) count++
+                      if (parameter.totalChlorine > 0.02) count++
+                      return count
+                    }
+
+                    const redCount = getRedCount(parameter)
+                    const borderColor = redCount > 2 ? 'red' : 'green' // Chuyển màu `border` dựa trên số lượng `h3` màu đỏ
+
+                    return (
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, x: 100 },
+                          visible: { opacity: 1, x: 0, transition: { delay: index * 0.2 } }
+                        }}
+                        key={parameter.id}
+                        className={`border p-4 rounded-lg shadow ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
+                        style={{ border: `2px solid ${borderColor}` }} // Cập nhật màu `border`
+                        onClick={() => {
+                          toggleEditFormVisibility(parameter)
+                          reset(parameter)
+                        }}
+                      >
+                        <div className='text-lg mb-4'>
+                          <div className='grid grid-cols-4 w-full'>
+                            <h3 className='lg:text-lg text-lg col-span-2 justify-center text-left'>
+                              <strong>Pond Name: {parameter.koiPondName}</strong>
+                            </h3>
+                            <h3 className='lg:text-lg text-lg col-span-2 justify-center text-center'>
+                              <strong>Date: {parameter.createDateTime.replace('T', ' ')}</strong>
+                            </h3>
+                          </div>
+                          <table className='table-auto w-full'>
+                            <thead>
+                              <tr>
+                                <th className='px-4 py-2'>Name</th>
+                                <th className='px-4 py-2'>Value</th>
+                                <th className='px-4 py-2'>Reference Value</th>
+                                <th className='px-4 py-2'>Unit</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td className='border px-4 py-2'>Nitrite(NO₂)</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.nitrite <= 0.1 ? 'green' : parameter.nitrite <= 0.3 ? 'orange' : 'red'
+                                  }}
+                                >
+                                  {parameter.nitrite}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 0.1</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Nitrate(NO₃)</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.nitrate <= 20 ? 'green' : parameter.nitrate <= 80 ? 'orange' : 'red'
+                                  }}
+                                >
+                                  {parameter.nitrate}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 20</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Phosphate(PO₄)</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.phosphate <= 0.035
+                                        ? 'green'
+                                        : parameter.phosphate <= 1
+                                          ? 'orange'
+                                          : 'red'
+                                  }}
+                                >
+                                  {parameter.phosphate}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 0.035</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Ammonium(NH₄)</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.ammonium <= 0.1 ? 'green' : parameter.ammonium <= 1 ? 'orange' : 'red'
+                                  }}
+                                >
+                                  {parameter.ammonium}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 0.1</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Hardness(GH)</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.hardness <= 21 ? 'green' : parameter.hardness <= 50 ? 'orange' : 'red'
+                                  }}
+                                >
+                                  {parameter.hardness}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 21</td>
+                                <td className='border px-4 py-2'>°dH</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Oxygen (O₂)</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color: parameter.oxygen > 6.5 ? 'green' : parameter.oxygen > 6 ? 'orange' : 'red'
+                                  }}
+                                >
+                                  {parameter.oxygen}
+                                </td>
+                                <td className='border px-4 py-2'>&gt; 6.5</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Temperature</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color: parameter.temperature >= 4 && parameter.temperature <= 26 ? 'green' : 'red'
+                                  }}
+                                >
+                                  {parameter.temperature}
+                                </td>
+                                <td className='border px-4 py-2'>5 - 26</td>
+                                <td className='border px-4 py-2'>°C</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>pH Value</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color: parameter.phValue >= 6.9 && parameter.phValue <= 8 ? 'green' : 'red'
+                                  }}
+                                >
+                                  {parameter.phValue}
+                                </td>
+                                <td className='border px-4 py-2'>6.9 - 8</td>
+                                <td className='border px-4 py-2'></td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>KH</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.carbonHardness >= 4
+                                        ? 'green'
+                                        : parameter.carbonHardness >= 1
+                                          ? 'orange'
+                                          : 'red'
+                                  }}
+                                >
+                                  {parameter.carbonHardness}
+                                </td>
+                                <td className='border px-4 py-2'>&gt;=4</td>
+                                <td className='border px-4 py-2'>°dH</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>CO₂</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.carbonDioxide >= 4 && parameter.carbonDioxide <= 35 ? 'green' : 'red'
+                                  }}
+                                >
+                                  {parameter.carbonDioxide}
+                                </td>
+                                <td className='border px-4 py-2'>5 - 35</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Salt</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color: parameter.salt <= 0.1 ? 'green' : parameter.salt <= 0.6 ? 'orange' : 'red'
+                                  }}
+                                >
+                                  {parameter.salt}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 0.1</td>
+                                <td className='border px-4 py-2 '>%</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'>Total chlorines</td>
+                                <td
+                                  className='border px-4 py-2'
+                                  style={{
+                                    color:
+                                      parameter.totalChlorine <= 0.001
+                                        ? 'green'
+                                        : parameter.totalChlorine <= 0.02
+                                          ? 'orange'
+                                          : 'red'
+                                  }}
+                                >
+                                  {parameter.totalChlorine}
+                                </td>
+                                <td className='border px-4 py-2'>0 - 0.001</td>
+                                <td className='border px-4 py-2'>mg/l</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'> Outdoor temp.</td>
+                                <td className='border px-4 py-2'>{parameter.carbonHardness}</td>
+                                <td className='border px-4 py-2'>-40 - 40</td>
+                                <td className='border px-4 py-2'>°C</td>
+                              </tr>
+                              <tr>
+                                <td className='border px-4 py-2'> Amount Fed</td>
+                                <td className='border px-4 py-2'>{parameter.amountFed}</td>
+                                <td className='border px-4 py-2'></td>
+                                <td className='border px-4 py-2'>g</td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <div className='flex mt-4'>
+                            <h3 className='lg:text-lg text-xs text-gray-500 font-semibold'>Note: {parameter.note}</h3>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+                <div className='flex justify-center mt-4'>
+                  {[...Array(totalPages).keys()].map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page + 1)}
+                      className={`mx-1 px-3 py-1 rounded ${currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
                   }
-
-                  const redCount = getRedCount(parameter)
-                  const borderColor = redCount > 2 ? 'red' : 'green' // Chuyển màu `border` dựa trên số lượng `h3` màu đỏ
-
-                  return (
+                }}
+                className='py-4 w-full z-0'
+              >
+                <div className='flex justify-end mb-4'>
+                  <Skeleton width={120} height={30} />
+                </div>
+                <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-4'>
+                  {[...Array(2)].map((_, index) => (
                     <motion.div
+                      key={index}
                       variants={{
                         hidden: { opacity: 0, x: 100 },
                         visible: { opacity: 1, x: 0, transition: { delay: index * 0.2 } }
                       }}
-                      key={parameter.id}
-                      className={`border p-4 rounded-lg shadow ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
-                      style={{ border: `2px solid ${borderColor}` }} // Cập nhật màu `border`
-                      onClick={() => {
-                        toggleEditFormVisibility(parameter)
-                        reset(parameter)
-                      }}
+                      className='border p-4 rounded-lg shadow bg-white'
                     >
                       <div className='text-lg mb-4'>
                         <div className='grid grid-cols-4 w-full'>
-                          <h3 className='lg:text-lg text-lg col-span-2 justify-center text-left'>
-                            <strong>Pond Name: {parameter.koiPondName}</strong>
-                          </h3>
-                          <h3 className='lg:text-lg text-lg col-span-2 justify-center text-center'>
-                            <strong>Date: {parameter.createDateTime.replace('T', ' ')}</strong>
-                          </h3>
+                          <Skeleton width='80%' height={20} className='col-span-2' />
+                          <Skeleton width='80%' height={20} className='col-span-2' />
                         </div>
-                        <table className='table-auto w-full'>
+                        <table className='table-auto w-full mt-2'>
                           <thead>
                             <tr>
-                              <th className='px-4 py-2'>Name</th>
-                              <th className='px-4 py-2'>Value</th>
-                              <th className='px-4 py-2'>Reference Value</th>
-                              <th className='px-4 py-2'>Unit</th>
+                              {[...Array(4)].map((_, i) => (
+                                <th key={i} className='px-4 py-2'>
+                                  <Skeleton width='100%' height={20} />
+                                </th>
+                              ))}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td className='border px-4 py-2'>Nitrite(NO₂)</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color:
-                                    parameter.nitrite <= 0.1 ? 'green' : parameter.nitrite <= 0.3 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.nitrite}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 0.1</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Nitrate(NO₃)</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color: parameter.nitrate <= 20 ? 'green' : parameter.nitrate <= 80 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.nitrate}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 20</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Phosphate(PO₄)</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color:
-                                    parameter.phosphate <= 0.035 ? 'green' : parameter.phosphate <= 1 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.phosphate}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 0.035</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Ammonium(NH₄)</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color:
-                                    parameter.ammonium <= 0.1 ? 'green' : parameter.ammonium <= 1 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.ammonium}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 0.1</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Hardness(GH)</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color:
-                                    parameter.hardness <= 21 ? 'green' : parameter.hardness <= 50 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.hardness}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 21</td>
-                              <td className='border px-4 py-2'>°dH</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Oxygen (O₂)</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color: parameter.oxygen > 6.5 ? 'green' : parameter.oxygen > 6 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.oxygen}
-                              </td>
-                              <td className='border px-4 py-2'>&gt; 6.5</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Temperature</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color: parameter.temperature >= 4 && parameter.temperature <= 26 ? 'green' : 'red'
-                                }}
-                              >
-                                {parameter.temperature}
-                              </td>
-                              <td className='border px-4 py-2'>5 - 26</td>
-                              <td className='border px-4 py-2'>°C</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>pH Value</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{ color: parameter.phValue >= 6.9 && parameter.phValue <= 8 ? 'green' : 'red' }}
-                              >
-                                {parameter.phValue}
-                              </td>
-                              <td className='border px-4 py-2'>6.9 - 8</td>
-                              <td className='border px-4 py-2'></td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>KH</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color:
-                                    parameter.carbonHardness >= 4
-                                      ? 'green'
-                                      : parameter.carbonHardness >= 1
-                                        ? 'orange'
-                                        : 'red'
-                                }}
-                              >
-                                {parameter.carbonHardness}
-                              </td>
-                              <td className='border px-4 py-2'>&gt;=4</td>
-                              <td className='border px-4 py-2'>°dH</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>CO₂</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color: parameter.carbonDioxide >= 4 && parameter.carbonDioxide <= 35 ? 'green' : 'red'
-                                }}
-                              >
-                                {parameter.carbonDioxide}
-                              </td>
-                              <td className='border px-4 py-2'>5 - 35</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Salt</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color: parameter.salt <= 0.1 ? 'green' : parameter.salt <= 0.6 ? 'orange' : 'red'
-                                }}
-                              >
-                                {parameter.salt}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 0.1</td>
-                              <td className='border px-4 py-2 '>%</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'>Total chlorines</td>
-                              <td
-                                className='border px-4 py-2'
-                                style={{
-                                  color:
-                                    parameter.totalChlorine <= 0.001
-                                      ? 'green'
-                                      : parameter.totalChlorine <= 0.02
-                                        ? 'orange'
-                                        : 'red'
-                                }}
-                              >
-                                {parameter.totalChlorine}
-                              </td>
-                              <td className='border px-4 py-2'>0 - 0.001</td>
-                              <td className='border px-4 py-2'>mg/l</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'> Outdoor temp.</td>
-                              <td className='border px-4 py-2'>{parameter.carbonHardness}</td>
-                              <td className='border px-4 py-2'>-40 - 40</td>
-                              <td className='border px-4 py-2'>°C</td>
-                            </tr>
-                            <tr>
-                              <td className='border px-4 py-2'> Amount Fed</td>
-                              <td className='border px-4 py-2'>{parameter.amountFed}</td>
-                              <td className='border px-4 py-2'></td>
-                              <td className='border px-4 py-2'>g</td>
-                            </tr>
+                            {[...Array(17)].map((_, i) => (
+                              <tr key={i}>
+                                {[...Array(4)].map((_, j) => (
+                                  <td key={j} className='border px-4 py-2'>
+                                    <Skeleton width='100%' height={20} />
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
-
-                        <div className='flex mt-4'>
-                          <h3 className='lg:text-lg text-xs text-gray-500 font-semibold'>Note: {parameter.note}</h3>
-                        </div>
+                      </div>
+                      <div className='flex mt-4'>
+                        <Skeleton width='50%' height={20} />
                       </div>
                     </motion.div>
-                  )
-                })}
-              </div>
-              <div className='flex justify-center mt-4'>
-                {[...Array(totalPages).keys()].map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page + 1)}
-                    className={`mx-1 px-3 py-1 rounded ${currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
-                  >
-                    {page + 1}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
+                  ))}
+                </div>
+                <div className='flex justify-center mt-4'>
+                  {[...Array(3)].map((_, i) => (
+                    <Skeleton key={i} width={40} height={30} className='mx-1' />
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </div>
 
           {isAddFormVisible && (
@@ -3148,11 +3223,6 @@ function WaterParameters() {
                   <p className='text-center font-semibold'>Delete this parameter</p>
                 </div>
               </div>
-            </div>
-          )}
-          {isLoading && (
-            <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-              <FaSpinner className='animate-spin text-green-500 text-6xl' />
             </div>
           )}
         </div>

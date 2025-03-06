@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { addToCartList, loadCart, removeToCartList } from '../../../redux/store/cartList'
-import { Link } from 'react-router-dom'
 
 const CartList = () => {
   const { isDarkMode } = useDarkMode()

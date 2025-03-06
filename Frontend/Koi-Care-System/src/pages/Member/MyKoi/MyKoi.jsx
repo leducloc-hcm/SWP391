@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Member/Header'
-import LeftSideBar from '../../../components/Member/LeftSideBar'
-import axios from 'axios'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
-import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import { FaSpinner } from 'react-icons/fa'
-import TopLayout from '../../../layouts/TopLayout'
+import axios from 'axios'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { FaSpinner } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
+import TopLayout from '../../../layouts/TopLayout'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -781,9 +783,10 @@ function MyKoi() {
         </div>
       )}
       {isLoading && (
-        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-          <FaSpinner className='animate-spin text-green-500 text-6xl' />
-        </div>
+        // <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+        //   <FaSpinner className='animate-spin text-green-500 text-6xl' />
+        // </div>
+        <Skeleton />
       )}
     </div>
   )

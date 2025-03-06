@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import LeftSideBar from '../../../components/Member/LeftSideBar'
-import Header from '../../../components/Member/Header'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayout'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import QuillContentRenderer from '../../../hooks/QuillContentRender'
+import TopLayout from '../../../layouts/TopLayout'
 
 function NewsDetail() {
   const [newDetail, setNewsDetail] = useState([])

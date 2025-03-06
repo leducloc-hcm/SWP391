@@ -1,13 +1,12 @@
-import logo from '../../assets/logo.png'
+import { useEffect, useRef, useState } from 'react'
+import { FaBars, FaFacebook, FaInstagram, FaTimes, FaTwitter } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import Homepage from '../../components/Homepage/Homepage'
+import { Link as ScrollLink } from 'react-scroll'
+import logo from '../../assets/logo.png'
 import About from '../../components/About/About'
 import Feature from '../../components/Features/Feature'
-import { Link as ScrollLink } from 'react-scroll'
+import Homepage from '../../components/Homepage/Homepage'
 import '../../index.css'
-import { FaFacebook, FaTwitter, FaInstagram, FaTimes } from 'react-icons/fa'
-import { useEffect, useRef, useState } from 'react'
-import { FaBars } from 'react-icons/fa'
 
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)

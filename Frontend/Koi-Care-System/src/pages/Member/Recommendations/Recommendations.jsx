@@ -1,19 +1,22 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useRef, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Member/Header'
-import LeftSideBar from '../../../components/Member/LeftSideBar'
-import '../../../index.css'
-import TopLayout from '../../../layouts/TopLayout'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
+import '../../../index.css'
+import TopLayout from '../../../layouts/TopLayout'
 import { addToCartList } from '../../../redux/store/cartList'
-import { motion } from 'framer-motion'
-import { useQuery } from '@tanstack/react-query'
+import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
   const [selectCategory, setSelectCategory] = useState('all')
@@ -29,6 +32,8 @@ function Recommendations() {
   const sidebarRef = useRef(null)
   const [count, setCount] = useState(1)
   const pageSize = 9
+
+  const skeletonItems = Array(12).fill(0)
 
   useEffect(() => {
     const savedWishlist = localStorage.getItem('wishlist')
@@ -643,7 +648,39 @@ function Recommendations() {
                     </div>
                   </>
                 ) : (
-                  <div className='text-center text-gray-500 text-lg mt-10'>No products found</div>
+                  <motion.div
+                    initial='hidden'
+                    animate='visible'
+                    variants={{
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.3
+                        }
+                      }
+                    }}
+                    className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 py-3 mt-4'
+                  >
+                    {[...Array(9)].map((_, index) => (
+                      <motion.div
+                        key={index}
+                        variants={{
+                          hidden: { opacity: 0, x: 100 },
+                          visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                        }}
+                        className='border border-gray-200 rounded-lg p-4'
+                      >
+                        <Skeleton height={230} className='rounded-t-lg' />
+                        <div className='p-4'>
+                          <Skeleton height={20} width='80%' />
+                          <Skeleton height={15} width='60%' className='mt-2' />
+                          <div className='flex justify-between items-center mt-4'>
+                            <Skeleton width='40%' height={20} />
+                            <Skeleton width={80} height={20} />
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
                 )}
               </div>
             </div>
