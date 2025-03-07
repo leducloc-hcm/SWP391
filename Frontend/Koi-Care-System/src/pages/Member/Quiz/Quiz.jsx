@@ -1,11 +1,12 @@
-import { Button, ButtonGroup, CircularProgress, TextField } from '@mui/material'
+import { Button, ButtonGroup, TextField } from '@mui/material'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
+import '../../../index.css'
 
-const Quiz = () => {
+export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
   const [currentKanji, setCurrentKanji] = useState(null)
   const [userAnswer, setUserAnswer] = useState('')
@@ -17,11 +18,13 @@ const Quiz = () => {
   const [isRandomMode, setIsRandomMode] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [darkMode, setDarkMode] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [svg, setSvg] = useState('')
+  const [svgKey, setSvgKey] = useState(0)
   const location = useLocation()
   const level = location.state?.level || 5
   const navigate = useNavigate()
 
-  // Fetch Kanji List from API
   const fetchKanji = async (level) => {
     try {
       const response = await axios.post('https://mazii.net/api/jlpt', {
@@ -33,16 +36,50 @@ const Quiz = () => {
       setKanjiList(response.data.results)
       pickRandomKanji(response.data.results)
     } catch (err) {
-      setError('⚠️ Failed to load Kanji data.')
+      console.log(err)
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (!kanjiList[currentIndex]) return
+
+    const kanji = kanjiList[currentIndex].word
+    if (!kanji) return
+
+    const svgUrl = `https://data.mazii.net/kanji/0${kanjiList[currentIndex]?.word.codePointAt(0).toString(16)}.svg`
+
+    fetch(svgUrl)
+      .then((response) => response.text())
+      .then((svg) => {
+        setSvg(svg)
+      })
+      .catch((error) => console.error('Lỗi khi tải SVG:', error))
+  }, [currentIndex, kanjiList])
+
+  const fetchKanjiViet = async (example) => {
+    try {
+      const response = await axios.post('https://api.mazii.net/api/get-mean', {
+        wordId: example[0]?.mobileId || 0,
+        type: 'kanji',
+        dict: 'javi',
+        word: example[0]?.kanji || '',
+        token: ''
+      })
+      setIsSubmitted(false)
+    } catch (err) {
+      setError('⚠️ Failed to load Kanji data.')
+      console.log('object', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     fetchKanji(level)
   }, [level])
 
-  // Pick a random kanji from the list
   const pickRandomKanji = (list) => {
     if (list.length > 0) {
       let nextKanji
@@ -81,8 +118,8 @@ const Quiz = () => {
           query: e,
           page: 1
         })
-        console.log(response.data.results)
         setExamples(response.data.results)
+        fetchKanjiViet(response?.data?.results)
       } catch (err) {
         setError('⚠️ Failed to load Kanji data.')
       } finally {
@@ -109,6 +146,26 @@ const Quiz = () => {
   if (error) {
     return <div className='text-center text-red-500 mt-10 text-xl'>{error}</div>
   }
+
+  const svgMatch = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/)
+  if (!svgMatch) return ''
+  const svgContent = svgMatch[1]
+
+  const allPaths = svgContent.match(/<path[^>]*>/g) || []
+  const groupMatches = svgContent.match(/<g[^>]*>.*?<\/g>/gs)
+
+  let firstGroup = ''
+  let firstGroupPaths = []
+  let lastGroupPaths = []
+
+  if (groupMatches && groupMatches.length >= 2) {
+    firstGroup = groupMatches[0]
+    firstGroupPaths = firstGroup.match(/<path[^>]*>/g) || []
+    lastGroupPaths = groupMatches[groupMatches.length - 1].match(/<path[^>]*>/g) || []
+  }
+
+  const extractedPaths = [...allPaths, ...lastGroupPaths]
+  const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width='{109}' height='{109}' viewBox='0 0 109 109'>${firstGroup}${extractedPaths.join('\n')}</svg>`
 
   return (
     <div className='flex flex-col gap-16 items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-6 text-center'>
@@ -191,7 +248,7 @@ const Quiz = () => {
                 </Button>
               </div>
             </div>
-            <p className='text-7xl font-bold mb-10 '>{currentKanji.word}</p>
+            <p className='text-9xl font-bold'>{currentKanji?.word}</p>
 
             <form onSubmit={handleSubmit} className='flex flex-col gap-6 mb-4'>
               <TextField
@@ -235,7 +292,26 @@ const Quiz = () => {
             }}
           >
             <h2 className='text-3xl font-bold text-indigo-600'>Kanji Details</h2>
-            <h2 className='text-6xl font-bold '>{currentKanji.word}</h2>
+            <div className='flex justify-center w-full'>
+              <div className='relative w-[rem] h-[18rem] rounded-lg bg-blue-100'>
+                <div key={svgKey} className='svg-container' dangerouslySetInnerHTML={{ __html: svgA }} />
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='size-7 m-3 absolute top-0 right-0 cursor-pointer'
+                  onClick={() => setSvgKey((prev) => prev + 1)}
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99'
+                  />
+                </svg>
+              </div>
+            </div>
             <div className='flex justify-between gap-4'>
               <div className='text-xl text-start text-gray-700 space-y-2'>
                 <p className='break-words whitespace-normal max-w-[300px]'>
@@ -292,5 +368,3 @@ const Quiz = () => {
     </div>
   )
 }
-
-export default Quiz

@@ -12,7 +12,7 @@ export default function PracticeKanji() {
       <h1 className='text-4xl font-bold text-white mb-6'>Welcome to Kanji Quiz 🎌</h1>
       <p className='text-lg text-white mb-4'>Select a level to start the quiz:</p>
 
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-5 gap-4'>
         {[1, 2, 3, 4, 5].map((level) => (
           <button
             key={level}
