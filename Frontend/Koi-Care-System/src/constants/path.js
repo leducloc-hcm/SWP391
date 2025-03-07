@@ -1,5 +1,3 @@
-
-
 const path = {
   home: '/',
   login: '/login',
@@ -87,6 +85,7 @@ const path = {
   newsAD: '/admin/news',
   newsView: '/admin/news/:id',
   practiceKanji: '/kanji',
+  quiz: '/quiz'
 }
 
 export default path

@@ -7,6 +7,7 @@ import { DarkModeProvider } from './hooks/DarkModeContext'
 import './index.css'
 import ProtectedRoute from './ProtectedRoute'
 import Loading from './components/Loading'
+import Quiz from './pages/Member/Quiz/Quiz'
 
 const Login = lazy(() => import('./pages/Login/Login'))
 const Home = lazy(() => import('./pages/Home/Home'))
@@ -913,8 +914,16 @@ function App() {
     {
       path: path.practiceKanji,
       element: (
-        <Suspense>
+        <Suspense fallback={<Loading />}>
           <PracticeKanji />
+        </Suspense>
+      )
+    },
+    {
+      path: path.quiz,
+      element: (
+        <Suspense fallback={<Loading />}>
+          <Quiz />
         </Suspense>
       )
     }
