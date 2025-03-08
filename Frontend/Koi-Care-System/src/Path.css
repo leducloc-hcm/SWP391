@@ -35,7 +35,6 @@ path {
   }
 }
 
-/* Áp dụng animation cho từng path */
 path {
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
