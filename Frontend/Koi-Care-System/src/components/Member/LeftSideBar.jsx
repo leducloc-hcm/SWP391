@@ -119,6 +119,7 @@ function LeftSideBar() {
           <div className='flex flex-col justify-center items-center mt-6 duration-200'>
             <div className=''>
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/Dashboard/Dashboard')}
                 to={path.dashboard}
                 end
                 className={({ isActive }) => {
@@ -151,6 +152,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/MyKoi/MyKoi')}
                 to={path.myKoi}
                 className={({ isActive }) => {
                   const active = isActive
@@ -171,6 +173,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/MyPond/MyPond')}
                 to={path.myPond}
                 className={({ isActive }) => {
                   const active = isActive
@@ -190,6 +193,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/WaterParameters/WaterParameters')}
                 to={isMember ? path.pricing : path.waterParameters}
                 className={({ isActive }) => {
                   const active = isActive
@@ -221,6 +225,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/Reminders/Reminders')}
                 to={isMember ? path.pricing : path.reminders}
                 className={({ isActive }) => {
                   const active = isActive
@@ -252,6 +257,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/Recommendations/Recommendations')}
                 to={path.recommendations}
                 className={({ isActive }) => {
                   const active = isActive
@@ -271,6 +277,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/FoodCalculator/FoodCalculator')}
                 to={isMember ? path.pricing : path.foodCalculator}
                 className={({ isActive }) => {
                   const active = isActive
@@ -302,6 +309,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/SaltCalculator/SaltCalculator')}
                 to={isMember ? path.pricing : path.saltCalculator}
                 className={({ isActive }) => {
                   const active = isActive
@@ -333,6 +341,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/Statistics/Statistics')}
                 to={path.statistics}
                 className={({ isActive }) => {
                   const active = isActive
@@ -353,6 +362,7 @@ function LeftSideBar() {
 
               {/* sidebar items  */}
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/News/News')}
                 to={path.news}
                 className={({ isActive }) => {
                   const active = isActive
@@ -372,6 +382,7 @@ function LeftSideBar() {
               </NavLink>
 
               <NavLink
+                onMouseEnter={() => import('../../pages/Member/About/About')}
                 to={path.aboutMember}
                 className={({ isActive }) => {
                   const active = isActive

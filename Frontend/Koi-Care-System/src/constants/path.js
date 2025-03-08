@@ -83,8 +83,9 @@ const path = {
   updateSupplierAD: '/admin/supplier/:id',
   managePay: '/admin/payment',
   newsAD: '/admin/news',
-  newsView: '/admin/news/:id'
-  
+  newsView: '/admin/news/:id',
+  practiceKanji: '/kanji',
+  quiz: '/quiz'
 }
 
 export default path

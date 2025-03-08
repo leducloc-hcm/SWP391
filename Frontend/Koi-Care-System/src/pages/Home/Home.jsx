@@ -6,6 +6,7 @@ import logo from '../../assets/logo.png'
 import About from '../../components/About/About'
 import Feature from '../../components/Features/Feature'
 import Homepage from '../../components/Homepage/Homepage'
+
 import '../../index.css'
 
 function Home() {
@@ -54,6 +55,14 @@ function Home() {
 
             <nav className='pr-10 hidden lg:block'>
               <ul className='flex space-x-8'>
+                <li>
+                  <Link
+                    to='/kanji'
+                    className='hover:bg-red-500 hover:text-white font-medium text-2xl px-4 py-2 rounded-lg transition'
+                  >
+                    Kanji
+                  </Link>
+                </li>
                 <li>
                   <ScrollLink
                     to='home'
@@ -127,6 +136,13 @@ function Home() {
                 >
                   Home
                 </ScrollLink>
+                <Link
+                  to='/kanji'
+                  className='hover:bg-red-500 hover:text-white font-medium text-xl px-4 py-2 rounded-lg transition'
+                  onClick={closeSidebar}
+                >
+                  Kanji
+                </Link>
                 <ScrollLink
                   to='features'
                   smooth={true}

@@ -7,6 +7,7 @@ import { DarkModeProvider } from './hooks/DarkModeContext'
 import './index.css'
 import ProtectedRoute from './ProtectedRoute'
 import Loading from './components/Loading'
+import Quiz from './pages/Member/Quiz/Quiz'
 
 const Login = lazy(() => import('./pages/Login/Login'))
 const Home = lazy(() => import('./pages/Home/Home'))
@@ -93,7 +94,7 @@ const UpdateSupplierAD = lazy(() => import('./pages/Admin/Supplier/UpdateSupplie
 const ManagePay = lazy(() => import('./pages/Admin/ManageReport/ManagePay'))
 const NewsAD = lazy(() => import('./pages/Admin/News/NewsAD'))
 const NewsView = lazy(() => import('./pages/Admin/News/NewsView'))
-
+const PracticeKanji = lazy(() => import('./pages/Member/Kanji/PracticeKanji'))
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -908,6 +909,22 @@ function App() {
             <NewsView />
           </Suspense>
         </ProtectedRoute>
+      )
+    },
+    {
+      path: path.practiceKanji,
+      element: (
+        <Suspense fallback={<Loading />}>
+          <PracticeKanji />
+        </Suspense>
+      )
+    },
+    {
+      path: path.quiz,
+      element: (
+        <Suspense fallback={<Loading />}>
+          <Quiz />
+        </Suspense>
       )
     }
   ])

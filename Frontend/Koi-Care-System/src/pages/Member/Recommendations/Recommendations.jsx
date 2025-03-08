@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -14,8 +16,6 @@ import '../../../index.css'
 import TopLayout from '../../../layouts/TopLayout'
 import { addToCartList } from '../../../redux/store/cartList'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -484,6 +484,7 @@ function Recommendations() {
                           <div>
                             <div className='border-b border-gray-200 lg:max-h-[300px] md:max-h-[300px] max-h-[230px]'>
                               <Link
+                                onMouseEnter={() => import('../Recommendations/RecommendationDetail')}
                                 to={`/member/recommendations/${products.id}`}
                                 key={products?.images[0]?.id}
                                 className='cursor-pointer'
@@ -667,7 +668,9 @@ function Recommendations() {
                           hidden: { opacity: 0, x: 100 },
                           visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
                         }}
-                        className='border border-gray-200 rounded-lg p-4'
+                        className={`${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        } mb-4 border rounded-lg shadow-sm duration-200 animate-bounce p-4`}
                       >
                         <Skeleton height={230} className='rounded-t-lg' />
                         <div className='p-4'>
