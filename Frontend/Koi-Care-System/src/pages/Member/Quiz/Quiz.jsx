@@ -1,10 +1,10 @@
 import { Button, ButtonGroup, TextField } from '@mui/material'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
-import '../../../Path.css'
+import './Quiz.css'
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
