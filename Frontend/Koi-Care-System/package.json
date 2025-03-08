@@ -25,7 +25,7 @@
     "@syncfusion/ej2-icons": "^27.1.50",
     "@syncfusion/ej2-react-calendars": "^27.1.51",
     "@syncfusion/ej2-react-schedule": "^27.1.51",
-    "@tanstack/react-query": "^5.64.2",
+    "@tanstack/react-query": "^5.67.2",
     "@tanstack/react-query-devtools": "^5.64.2",
     "@tanstack/react-store": "^0.7.0",
     "antd": "^5.20.6",
