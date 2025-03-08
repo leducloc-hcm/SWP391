@@ -23,7 +23,6 @@ export default {
       }
     }
   },
-  // eslint-disable-next-line no-undef
   plugins: [
     function ({ addUtilities }) {
       addUtilities({
@@ -33,6 +32,21 @@ export default {
         },
         '.no-scroll-bar::-webkit-scrollbar': {
           display: 'none'
+        },
+        '.thin-scrollbar': {
+          'scrollbar-width': 'thin',
+          'scrollbar-color': '#5D87FF #EBDDCB'
+        },
+        '.thin-scrollbar::-webkit-scrollbar': {
+          width: '6px',
+          height: '6px'
+        },
+        '.thin-scrollbar::-webkit-scrollbar-thumb': {
+          background: '#5D87FF',
+          borderRadius: '6px'
+        },
+        '.thin-scrollbar::-webkit-scrollbar-track': {
+          background: '#EBDDCB'
         }
       })
     }

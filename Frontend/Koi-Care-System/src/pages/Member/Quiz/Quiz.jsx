@@ -1,11 +1,15 @@
 import { Button, ButtonGroup, TextField } from '@mui/material'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
+<<<<<<< HEAD
 import '../../../index.css'
 import Badge from '@mui/material/Badge'
+=======
+import './Quiz.css'
+>>>>>>> da9d77d168f7cd02d681bb85fda1fb22e8a42d96
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
@@ -201,11 +205,16 @@ export default function Quiz() {
 
   const extractedPaths = [...allPaths, ...lastGroupPaths]
   const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width='{109}' height='{109}' viewBox='0 0 109 109'>${firstGroup}${extractedPaths.join('\n')}</svg>`
+  console.log('object', svgA)
 
   return (
     <div className='flex flex-col gap-12 items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-6'>
       <motion.div
+<<<<<<< HEAD
         className='p-6 bg-white rounded-xl shadow-2xl'
+=======
+        className='relative flex flex-col p-6 bg-white rounded-lg shadow-lg min-w-[50vw] min-h-[75vh]'
+>>>>>>> da9d77d168f7cd02d681bb85fda1fb22e8a42d96
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.5 }}
         style={{ transformStyle: 'preserve-3d' }}
@@ -447,12 +456,17 @@ export default function Quiz() {
         ) : (
           // mat sau
           <div
+<<<<<<< HEAD
             className='text-center flex flex-col justify-between w-[60vw] min-h-[70vh]'
+=======
+            className='text-center p-3 flex flex-col justify-between max-h-[67vh] overflow-y-auto thin-scrollbar'
+>>>>>>> da9d77d168f7cd02d681bb85fda1fb22e8a42d96
             style={{
               transform: 'rotateY(180deg)',
               backfaceVisibility: 'hidden'
             }}
           >
+<<<<<<< HEAD
             <div className='flex gap-6'>
               {/*  SVG vs mean kanji vs level vs kun */}
               <div className='w-1/2 flex flex-col text-gray-700 space-y-3'>
@@ -491,6 +505,44 @@ export default function Quiz() {
               <div className='w-1/2'>
                 <h3 className='text-xl text-center font-bold text-indigo-500'>EXAMPLES:</h3>
                 <div className='mt-3 flex-1 text-gray-700 text-md space-y-2'>
+=======
+            <h2 className='text-3xl font-bold text-indigo-600'>Kanji Details</h2>
+            <div className='flex justify-center w-full mt-5'>
+              <div className='relative w-[rem] h-[18rem] rounded-lg bg-blue-100'>
+                <div key={svgKey} className='svg-container' dangerouslySetInnerHTML={{ __html: svgA }} />
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='size-7 m-3 absolute top-0 right-0 cursor-pointer'
+                  onClick={() => setSvgKey((prev) => prev + 1)}
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99'
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className='flex justify-between gap-4 mt-10'>
+              <div className='text-xl text-start text-gray-700 space-y-2'>
+                <p className='break-words whitespace-normal max-w-[300px]'>
+                  <strong className='text-indigo-500'>Kun reading:</strong> {currentKanji.phonetic}
+                </p>
+                <p className='break-words whitespace-normal max-w-[300px]'>
+                  <strong className='text-indigo-500'>Meaning:</strong> {currentKanji.mean}
+                </p>
+                <p>
+                  <strong className='text-indigo-500'>Level:</strong> N{currentKanji.group}
+                </p>
+              </div>
+              <div>
+                <h3 className='text-xl text-start font-bold text-indigo-500'>Examples:</h3>
+                <div className='mt-2 flex-1 text-gray-700 text-lg'>
+>>>>>>> da9d77d168f7cd02d681bb85fda1fb22e8a42d96
                   {examplesArray?.map((example) =>
                     example?.examples?.slice(0, 3).map((ex, index) => (
                       <div
@@ -509,9 +561,13 @@ export default function Quiz() {
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
 
             {/* Buttons */}
             <div className='flex gap-4 mt-4'>
+=======
+            <div className='flex gap-3 mt-10'>
+>>>>>>> da9d77d168f7cd02d681bb85fda1fb22e8a42d96
               <Button
                 onClick={() => setFlipped(false)}
                 variant='contained'
