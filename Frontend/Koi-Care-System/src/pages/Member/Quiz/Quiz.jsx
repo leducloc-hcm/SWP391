@@ -1,10 +1,15 @@
-import { Button, ButtonGroup, TextField } from '@mui/material'
+import { Box, Button, ButtonGroup, LinearProgress, TextField } from '@mui/material'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
 import './Quiz.css'
+import { MdOutlineForward10, MdOutlineReplay10, MdSkipNext, MdSkipPrevious } from 'react-icons/md'
+import { BsArrowRepeat } from 'react-icons/bs'
+import { FaPlay } from 'react-icons/fa'
+import { CiPause1 } from 'react-icons/ci'
+import { TbVolume, TbVolume2, TbVolume3 } from 'react-icons/tb'
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
@@ -24,6 +29,35 @@ export default function Quiz() {
   const location = useLocation()
   const level = location.state?.level || 5
   const navigate = useNavigate()
+
+  const [progress, setProgress] = useState(0)
+  const [buffer, setBuffer] = useState(10)
+
+  const progressRef = useRef(() => {})
+  useEffect(() => {
+    progressRef.current = () => {
+      if (progress === 100) {
+        setProgress(0)
+        setBuffer(10)
+      } else {
+        setProgress(progress + 1)
+        if (buffer < 100 && progress % 5 === 0) {
+          const newBuffer = buffer + 1 + Math.random() * 10
+          setBuffer(newBuffer > 100 ? 100 : newBuffer)
+        }
+      }
+    }
+  })
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      progressRef.current()
+    }, 100)
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
 
   const fetchKanji = async (level) => {
     try {
@@ -149,43 +183,44 @@ export default function Quiz() {
 
   const svgMatch = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/)
   if (!svgMatch) return ''
-  const svgContent = svgMatch[1]
 
+  const svgContent = svgMatch[1]
   const allPaths = svgContent.match(/<path[^>]*>/g) || []
   const groupMatches = svgContent.match(/<g[^>]*>.*?<\/g>/gs)
 
   let firstGroup = ''
-  let firstGroupPaths = []
+  let lastGroup = ''
   let lastGroupPaths = []
 
   if (groupMatches && groupMatches.length >= 2) {
     firstGroup = groupMatches[0]
-    firstGroupPaths = firstGroup.match(/<path[^>]*>/g) || []
-    lastGroupPaths = groupMatches[groupMatches.length - 1].match(/<path[^>]*>/g) || []
+    lastGroup = groupMatches[groupMatches.length - 1]
+    lastGroupPaths = lastGroup.match(/<path[^>]*>/g) || []
   }
 
-  const extractedPaths = [...allPaths, ...lastGroupPaths]
-  const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width='{109}' height='{109}' viewBox='0 0 109 109'>${firstGroup}${extractedPaths.join('\n')}</svg>`
-  console.log('object', svgA)
+  const extractedPaths = [...allPaths, ...lastGroupPaths].join('\n')
+
+  const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109">\n  ${firstGroup}\n  ${extractedPaths}\n</svg>`
 
   return (
-    <div className='flex flex-col gap-16 items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-6 text-center'>
+    <div className='flex flex-col gap-16 items-center justify-start min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-6 text-center'>
       <h1 className='text-3xl font-bold text-white'>KANJI QUIZ N{level} 🎌</h1>
 
       <motion.div
-        className='relative flex flex-col p-6 bg-white rounded-lg shadow-lg min-w-[50vw] min-h-[75vh]'
+        className='relative flex flex-col p-6 bg-white rounded-lg shadow-lg min-w-[40vw] max-h-[65vh]'
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.5 }}
         style={{ transformStyle: 'preserve-3d' }}
       >
         {!flipped ? (
           <div
-            className='relative text-center flex flex-col justify-between min-h-[68vh]'
+            className='relative text-center flex flex-col justify-between min-h-[60vh]'
             style={{ backfaceVisibility: 'hidden' }}
           >
             <div className='flex justify-between '>
               <div className='flex gap-2'>
                 <Button
+                  onMouseEnter={() => import('../Kanji/PracticeKanji')}
                   onClick={() => navigate('/kanji')}
                   variant='contained'
                   color='primary'
@@ -249,7 +284,7 @@ export default function Quiz() {
                 </Button>
               </div>
             </div>
-            <p className='text-9xl font-bold'>{currentKanji?.word}</p>
+            <p className='text-[10rem] font-bold'>{currentKanji?.word}</p>
 
             <form onSubmit={handleSubmit} className='flex flex-col gap-6 mb-4'>
               <TextField
@@ -286,7 +321,7 @@ export default function Quiz() {
           </div>
         ) : (
           <div
-            className='text-center p-3 flex flex-col justify-between max-h-[67vh] overflow-y-auto thin-scrollbar'
+            className='text-center p-3 flex flex-col justify-between min-h-[60vh] overflow-y-auto thin-scrollbar'
             style={{
               transform: 'rotateY(180deg)',
               backfaceVisibility: 'hidden'
@@ -366,6 +401,28 @@ export default function Quiz() {
           </div>
         )}
       </motion.div>
+      <div className='fixed w-full h-32 bg-slate-500 bottom-0'>
+        <audio width='90%'>
+          <source src='https://files.vidstack.io/sprite-fight/audio.mp3' type='' />
+        </audio>
+        <div className='flex flex-col gap-5'>
+          <div className='flex gap-5'>
+            <MdSkipPrevious />
+            <MdOutlineForward10 />
+            <FaPlay />
+            <CiPause1 />
+            <MdOutlineReplay10 />
+            <MdSkipNext />
+            <BsArrowRepeat />
+            <TbVolume />
+            <TbVolume2 />
+            <TbVolume3 />
+          </div>
+          <Box sx={{ width: '70%' }}>
+            <LinearProgress variant='buffer' value={progress} valueBuffer={buffer} />
+          </Box>
+        </div>
+      </div>
     </div>
   )
 }

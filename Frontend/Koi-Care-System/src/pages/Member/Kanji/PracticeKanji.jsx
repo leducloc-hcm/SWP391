@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import backgroundVideo from '../../../assets/0917(1).mp4'
+import { useState } from 'react'
 
 export default function PracticeKanji() {
   const navigate = useNavigate()
