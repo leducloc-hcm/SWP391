@@ -1,0 +1,111 @@
+path {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: draw 6s linear forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.svg-container svg {
+  width: 400px;
+  height: 270px;
+}
+
+.svg-container path {
+  stroke: red;
+  stroke-width: 2;
+}
+
+.svg-container text {
+  fill: blue;
+  font-size: 12px;
+}
+@keyframes draw {
+  0% {
+    stroke-dasharray: 0, 100;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 100, 100;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Áp dụng animation cho từng path */
+path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 1s ease forwards;
+}
+
+svg path:nth-of-type(1) {
+  animation-delay: 1s;
+}
+
+svg path:nth-of-type(2) {
+  animation-delay: 1.5s;
+}
+
+svg path:nth-of-type(3) {
+  animation-delay: 2s;
+}
+
+svg path:nth-of-type(4) {
+  animation-delay: 2.5s;
+}
+
+svg path:nth-of-type(5) {
+  animation-delay: 3s;
+}
+
+svg path:nth-of-type(6) {
+  animation-delay: 3.5s;
+}
+
+svg path:nth-of-type(7) {
+  animation-delay: 4s;
+}
+
+svg path:nth-of-type(8) {
+  animation-delay: 4.5s;
+}
+
+svg path:nth-of-type(9) {
+  animation-delay: 5s;
+}
+
+svg path:nth-of-type(10) {
+  animation-delay: 5.5s;
+}
+
+svg path:nth-of-type(11) {
+  animation-delay: 6s;
+}
+
+svg path:nth-of-type(12) {
+  animation-delay: 6.5s;
+}
+
+svg path:nth-of-type(13) {
+  animation-delay: 7s;
+}
+
+svg path:nth-of-type(14) {
+  animation-delay: 7.5s;
+}
+
+svg path:nth-of-type(15) {
+  animation-delay: 8s;
+}
+
+svg path:nth-of-type(16) {
+  animation-delay: 8.5s;
+}
+
+svg path:nth-of-type(17) {
+  animation-delay: 9s;
+}

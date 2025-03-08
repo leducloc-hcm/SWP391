@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
-import '../../../index.css'
+import '../../../Path.css'
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
@@ -166,13 +166,14 @@ export default function Quiz() {
 
   const extractedPaths = [...allPaths, ...lastGroupPaths]
   const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width='{109}' height='{109}' viewBox='0 0 109 109'>${firstGroup}${extractedPaths.join('\n')}</svg>`
+  console.log('object', svgA)
 
   return (
     <div className='flex flex-col gap-16 items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-6 text-center'>
       <h1 className='text-3xl font-bold text-white'>KANJI QUIZ N{level} 🎌</h1>
 
       <motion.div
-        className='relative flex flex-col p-6 bg-white rounded-lg shadow-lg min-w-[50vw] min-h-[vh]'
+        className='relative flex flex-col p-6 bg-white rounded-lg shadow-lg min-w-[50vw] min-h-[75vh]'
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.5 }}
         style={{ transformStyle: 'preserve-3d' }}
@@ -185,7 +186,7 @@ export default function Quiz() {
             <div className='flex justify-between '>
               <div className='flex gap-2'>
                 <Button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/kanji')}
                   variant='contained'
                   color='primary'
                   className='w-4 h-10 absolute top-0 '
@@ -285,14 +286,14 @@ export default function Quiz() {
           </div>
         ) : (
           <div
-            className='text-center p-3 flex flex-col justify-between h-[67vh]'
+            className='text-center p-3 flex flex-col justify-between max-h-[67vh] overflow-y-auto thin-scrollbar'
             style={{
               transform: 'rotateY(180deg)',
               backfaceVisibility: 'hidden'
             }}
           >
             <h2 className='text-3xl font-bold text-indigo-600'>Kanji Details</h2>
-            <div className='flex justify-center w-full'>
+            <div className='flex justify-center w-full mt-5'>
               <div className='relative w-[rem] h-[18rem] rounded-lg bg-blue-100'>
                 <div key={svgKey} className='svg-container' dangerouslySetInnerHTML={{ __html: svgA }} />
                 <svg
@@ -312,7 +313,7 @@ export default function Quiz() {
                 </svg>
               </div>
             </div>
-            <div className='flex justify-between gap-4'>
+            <div className='flex justify-between gap-4 mt-10'>
               <div className='text-xl text-start text-gray-700 space-y-2'>
                 <p className='break-words whitespace-normal max-w-[300px]'>
                   <strong className='text-indigo-500'>Kun reading:</strong> {currentKanji.phonetic}
@@ -342,7 +343,7 @@ export default function Quiz() {
                 </div>
               </div>
             </div>
-            <div className='flex gap-3'>
+            <div className='flex gap-3 mt-10'>
               <Button
                 onClick={() => {
                   setFlipped(false)
