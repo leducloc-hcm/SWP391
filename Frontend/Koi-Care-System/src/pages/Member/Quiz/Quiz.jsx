@@ -246,9 +246,8 @@ export default function Quiz() {
         style={{ transformStyle: 'preserve-3d' }}
       >
         {!flipped ? (
-          // mat truoc
           <div
-            className='relative text-center flex flex-col justify-between min-h-[60vh]'
+            className='relative text-center flex flex-col justify-between min-h-[60vh] min-w-[40vw]'
             style={{ backfaceVisibility: 'hidden' }}
           >
             <div className='flex justify-between '>
@@ -414,8 +413,6 @@ export default function Quiz() {
             </div>
             <p className='text-[10rem] font-bold'>{currentKanji?.word}</p>
 
-            <div className='text-9xl font-bold'>{currentKanji?.word}</div>
-
             <form onSubmit={handleSubmit} className='flex flex-col'>
               <TextField
                 variant='outlined'
@@ -484,7 +481,7 @@ export default function Quiz() {
         ) : (
           // mat sau
           <div
-            className='text-center p-3 flex flex-col justify-between min-h-[60vh] overflow-y-auto thin-scrollbar'
+            className='text-center p-3 flex flex-col justify-between max-h-[70vh] min-w-[40vw]  overflow-y-auto thin-scrollbar'
             style={{
               transform: 'rotateY(180deg)',
               backfaceVisibility: 'hidden'
@@ -512,7 +509,7 @@ export default function Quiz() {
               </div>
             </div>
             <div className='flex justify-between gap-4 mt-10'>
-              <div className='text-xl text-start text-gray-700 space-y-2'>
+              <div className='flex-1 text-xl text-start text-gray-700 space-y-2'>
                 <p className='break-words whitespace-normal max-w-[300px]'>
                   <strong className='text-indigo-500'>Kun reading:</strong> {currentKanji.phonetic}
                 </p>
@@ -523,7 +520,7 @@ export default function Quiz() {
                   <strong className='text-indigo-500'>Level:</strong> N{currentKanji.group}
                 </p>
               </div>
-              <div>
+              <div className='flex-1'>
                 <h3 className='text-xl text-start font-bold text-indigo-500'>Examples:</h3>
                 <div className='mt-2 flex-1 text-gray-700 text-lg'>
                   {examplesArray?.map((example) =>
@@ -594,28 +591,6 @@ export default function Quiz() {
           </div>
         )}
       </motion.div>
-      <div className='fixed w-full h-32 bg-slate-500 bottom-0'>
-        <audio width='90%'>
-          <source src='https://files.vidstack.io/sprite-fight/audio.mp3' type='' />
-        </audio>
-        <div className='flex flex-col gap-5'>
-          <div className='flex gap-5'>
-            <MdSkipPrevious />
-            <MdOutlineForward10 />
-            <FaPlay />
-            <CiPause1 />
-            <MdOutlineReplay10 />
-            <MdSkipNext />
-            <BsArrowRepeat />
-            <TbVolume />
-            <TbVolume2 />
-            <TbVolume3 />
-          </div>
-          <Box sx={{ width: '70%' }}>
-            <LinearProgress variant='buffer' value={progress} valueBuffer={buffer} />
-          </Box>
-        </div>
-      </div>
     </div>
   )
 }
