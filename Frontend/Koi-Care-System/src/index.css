@@ -197,3 +197,17 @@ input:checked + .slider:before {
 .no-arrows[type='number'] {
   -moz-appearance: textfield;
 }
+
+.sakura {
+  position: fixed;
+  top: -20px;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}

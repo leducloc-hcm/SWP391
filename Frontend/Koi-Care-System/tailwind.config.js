@@ -6,7 +6,9 @@ export default {
       fontFamily: {
         dancing: ['Forte', 'cMyriad Variable Concept'],
         poppins: ['Poppins', 'sans-serif'],
-        averia: ['Averia Serif Libre', 'serif']
+        averia: ['Averia Serif Libre', 'serif'],
+        jp: ['Noto Sans JP', 'sans-serif'],
+        mincho: ['Sawarabi Mincho', 'serif']
       },
       colors: {
         'custom-dark': '#24303F',
