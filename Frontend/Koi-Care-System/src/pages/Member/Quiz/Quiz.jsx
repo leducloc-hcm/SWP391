@@ -5,12 +5,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
 import './Quiz.css'
-import { MdOutlineForward10, MdOutlineReplay10, MdSkipNext, MdSkipPrevious } from 'react-icons/md'
-import { BsArrowRepeat } from 'react-icons/bs'
-import { FaPlay } from 'react-icons/fa'
-import { CiPause1 } from 'react-icons/ci'
-import { TbVolume, TbVolume2, TbVolume3 } from 'react-icons/tb'
 import Badge from '@mui/material/Badge'
+import SakuraFalling from './SakuraFalling'
+import '../../../pages/Member/Quiz/Quiz.css'
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
@@ -33,6 +30,7 @@ export default function Quiz() {
   const [correct, setCorrect] = useState(false)
   const [savedKanjis, setSavedKanjis] = useState([])
   const [savedIndex, setSavedIndex] = useState(0)
+  const [showSakura, setShowSakura] = useState(true)
 
   const navigate = useNavigate()
 
@@ -238,7 +236,30 @@ export default function Quiz() {
   const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109">\n  ${firstGroup}\n  ${extractedPaths}\n</svg>`
 
   return (
-    <div className='flex flex-col gap-12 items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-6'>
+    <div className='relative flex flex-col pt-4 gap-4 items-center justify-stretch min-h-screen bg-gradient-to-b from-red-100 to-pink-300'>
+      <div className='flex items-center justify-center gap-4'>
+        <p className='text-4xl text-black font-bold font-mincho'>漢字-N{level}</p>
+        <label className='absolute top-4 right-4 flex items-center cursor-pointer'>
+          <span className='mr-2 text-white font-medium'>{showSakura}</span>
+          <div className='relative'>
+            <input
+              type='checkbox'
+              checked={showSakura}
+              onChange={() => setShowSakura(!showSakura)}
+              className='sr-only'
+            />
+            <div className='w-14 h-8 bg-gray-300 rounded-full shadow-inner'></div>
+            <div
+              className={`absolute left-1 top-1 w-6 h-6 rounded-full shadow-md transform transition ${
+                showSakura ? 'translate-x-6 bg-pink-500' : 'bg-gray-500'
+              }`}
+            ></div>
+          </div>
+        </label>
+        <div className='absolute bottom-4 right-4'></div>
+        {showSakura && <SakuraFalling />}
+      </div>
+
       <motion.div
         className='p-6 bg-white rounded-xl shadow-2xl'
         animate={{ rotateY: flipped ? 180 : 0 }}
@@ -433,6 +454,8 @@ export default function Quiz() {
                       height: 44,
                       fontWeight: 'bold',
                       boxShadow: 2
+                      // backgroundColor: '#EC4899',
+                      // '&:hover': { backgroundColor: '#DB2777' }
                     }}
                   >
                     Submit
@@ -524,7 +547,7 @@ export default function Quiz() {
                 <h3 className='text-xl text-start font-bold text-indigo-500'>Examples:</h3>
                 <div className='mt-2 flex-1 text-gray-700 text-lg'>
                   {examplesArray?.map((example) =>
-                    example?.examples?.slice(0, 3).map((ex, index) => (
+                    example?.examples?.slice(0, 4).map((ex, index) => (
                       <div
                         key={index}
                         className='flex items-center text-start gap-2 bg-gray-100 p-3 rounded-lg shadow-sm'
