@@ -1,13 +1,13 @@
 import { Button, ButtonGroup, TextField } from '@mui/material'
+import Badge from '@mui/material/Badge'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
 import '../../../index.css'
-import Badge from '@mui/material/Badge'
-import SakuraFalling from './SakuraFalling'
 import '../../../pages/Member/Quiz/Quiz.css'
+import SakuraFalling from './SakuraFalling'
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
