@@ -1,13 +1,13 @@
 import { Button, ButtonGroup, TextField } from '@mui/material'
+import Badge from '@mui/material/Badge'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Loading from '../../../components/Loading'
 import '../../../index.css'
-import Badge from '@mui/material/Badge'
-import SakuraFalling from './SakuraFalling'
 import '../../../pages/Member/Quiz/Quiz.css'
+import SakuraFalling from './SakuraFalling'
 
 export default function Quiz() {
   const [kanjiList, setKanjiList] = useState([])
@@ -31,6 +31,33 @@ export default function Quiz() {
   const [savedKanjis, setSavedKanjis] = useState([])
   const [savedIndex, setSavedIndex] = useState(0)
   const [showSakura, setShowSakura] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
+  const [inputIndex, setInputIndex] = useState('')
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') {
+        pickRandomKanji(kanjiList)
+      } else if (e.key === 'ArrowLeft') {
+        pickPreviousKanji(kanjiList)
+      } else if (e.key === ' ') {
+        if (!submitted) {
+          handleSubmit()
+        } else if (submitted && !flipped) {
+          setFlipped(true)
+          handleExamples(currentKanji.word)
+        } else if (submitted && flipped) {
+          setSubmitted(false)
+          setFlipped(false)
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [kanjiList, currentKanji, submitted, flipped])
 
   const navigate = useNavigate()
 
@@ -53,10 +80,8 @@ export default function Quiz() {
 
   useEffect(() => {
     if (!kanjiList[currentIndex]) return
-
     const kanji = kanjiList[currentIndex].word
     if (!kanji) return
-
     const svgUrl = `https://data.mazii.net/kanji/0${kanjiList[currentIndex]?.word.codePointAt(0).toString(16)}.svg`
     fetch(svgUrl)
       .then((response) => response.text())
@@ -75,7 +100,9 @@ export default function Quiz() {
     if (list.length > 0) {
       let nextKanji
       if (isRandomMode) {
-        nextKanji = list[Math.floor(Math.random() * list.length)]
+        let randomKanji = Math.floor(Math.random() * list.length)
+        nextKanji = list[randomKanji]
+        setCurrentIndex(randomKanji)
       } else {
         const newIndex = (currentIndex + 1) % list.length
         setCurrentIndex(newIndex)
@@ -87,6 +114,22 @@ export default function Quiz() {
       setFlipped(false)
       setSubmitted(false)
     }
+  }
+
+  const handleSubmitIndex = () => {
+    const index = parseInt(inputIndex, 10) - 1
+    if (!isNaN(index) && index >= 0 && index < kanjiList.length) {
+      setCurrentIndex(index)
+      setCurrentKanji(kanjiList[index])
+      setUserAnswer('')
+      setFeedback('')
+      setFlipped(false)
+      setSubmitted(false)
+    } else {
+      console.log('Index không hợp lệ!')
+    }
+    setIsEditing(false)
+    setInputIndex('')
   }
 
   const pickPreviousKanji = () => {
@@ -121,9 +164,11 @@ export default function Quiz() {
     fetchExample()
   }
   const handleSubmit = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
     if (!currentKanji) return
-    const validAnswers = currentKanji.phonetic.trim().replaceAll('.').replaceAll(',').replaceAll('-').split(' ')
+
+    const validAnswers = currentKanji.phonetic.trim().replace(/[.,-]/g, '').split(' ')
+
     if (validAnswers.includes(userAnswer.trim())) {
       setFeedback('🌸 せいかい！すごい！💖')
       setCorrect(true)
@@ -190,7 +235,7 @@ export default function Quiz() {
   return (
     <div className='relative flex flex-col pt-4 gap-4 items-center justify-stretch min-h-screen bg-gradient-to-b from-red-100 to-pink-300'>
       <div className='flex items-center justify-center gap-4'>
-        <p className='text-4xl text-black font-bold font-mincho'>漢字-N{level}</p>
+        <p className='text-4xl text-black font-bold'>漢字-N{level}</p>
         <label className='absolute top-4 right-4 flex items-center cursor-pointer'>
           <span className='mr-2 text-white font-medium'>{showSakura}</span>
           <div className='relative'>
@@ -211,7 +256,6 @@ export default function Quiz() {
         <div className='absolute bottom-4 right-4'></div>
         {showSakura && <SakuraFalling />}
       </div>
-
       <motion.div
         className='p-6 bg-white rounded-xl shadow-2xl'
         animate={{ rotateY: flipped ? 180 : 0 }}
@@ -385,7 +429,7 @@ export default function Quiz() {
               </div>
             </div>
 
-            <div className='text-9xl font-semibold font-mincho'>{currentKanji?.word}</div>
+            <div className='text-9xl font-semibold'>{currentKanji?.word}</div>
 
             <form onSubmit={handleSubmit} className='flex flex-col'>
               <TextField
@@ -395,6 +439,7 @@ export default function Quiz() {
                 value={userAnswer}
                 onChange={(e) => setUserAnswer(e.target.value)}
                 className='border rounded-lg'
+                disabled={submitted}
               />
               <div className='mt-4'>
                 {!submitted && (
@@ -447,9 +492,29 @@ export default function Quiz() {
                   </div>
                 )}
                 <div className='flex justify-end mt-2'>
-                  <p className='text-sm font-semibold bg-blue-100 px-3 py-1 rounded-lg shadow-md'>
-                    {`${currentIndex + 1} / ${kanjiList.length}`}
-                  </p>
+                  {isEditing ? (
+                    <input
+                      type='number'
+                      min='1'
+                      max={kanjiList.length}
+                      value={inputIndex}
+                      onChange={(e) => setInputIndex(e.target.value)}
+                      onBlur={handleSubmitIndex}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSubmitIndex()}
+                      autoFocus
+                      className='border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300'
+                    />
+                  ) : (
+                    <p
+                      onClick={() => {
+                        setIsEditing(true)
+                        setInputIndex(currentIndex + 1)
+                      }}
+                      className='text-sm font-semibold bg-blue-100 px-3 py-2 rounded-lg shadow-md cursor-pointer hover:bg-blue-200 transition'
+                    >
+                      {`${currentIndex + 1} / ${kanjiList.length}`}
+                    </p>
+                  )}
                 </div>
               </div>
             </form>
@@ -523,7 +588,10 @@ export default function Quiz() {
             {/* Buttons */}
             <div className='flex gap-4 mt-4'>
               <Button
-                onClick={() => setFlipped(false)}
+                onClick={() => {
+                  setFlipped(false)
+                  setSubmitted(false)
+                }}
                 variant='contained'
                 color='error'
                 fullWidth
