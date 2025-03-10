@@ -85,7 +85,8 @@ const path = {
   newsAD: '/admin/news',
   newsView: '/admin/news/:id',
   practiceKanji: '/kanji',
-  quiz: '/quiz'
+  quiz: '/quiz',
+  kanjiLearn: '/kanjiLearn'
 }
 
 export default path

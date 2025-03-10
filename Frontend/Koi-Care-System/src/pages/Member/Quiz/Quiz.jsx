@@ -58,32 +58,14 @@ export default function Quiz() {
     if (!kanji) return
 
     const svgUrl = `https://data.mazii.net/kanji/0${kanjiList[currentIndex]?.word.codePointAt(0).toString(16)}.svg`
-
     fetch(svgUrl)
       .then((response) => response.text())
       .then((svg) => {
         setSvg(svg)
+        console.log(kanjiList[currentIndex]?.word.codePointAt(0).toString(16))
       })
       .catch((error) => console.error('Lỗi khi tải SVG:', error))
   }, [currentIndex, kanjiList])
-
-  const fetchKanjiViet = async (example) => {
-    try {
-      const response = await axios.post('https://api.mazii.net/api/get-mean', {
-        wordId: example[0]?.mobileId || 0,
-        type: 'kanji',
-        dict: 'javi',
-        word: example[0]?.kanji || '',
-        token: ''
-      })
-      setIsSubmitted(false)
-    } catch (err) {
-      setError('⚠️ Failed to load Kanji data.')
-      console.log('object', err)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
     fetchKanji(level)
@@ -130,7 +112,6 @@ export default function Quiz() {
           page: 1
         })
         setExamples(response.data.results)
-        fetchKanjiViet(response?.data?.results)
       } catch (err) {
         setError('⚠️ Failed to load Kanji data.')
       } finally {
@@ -204,7 +185,7 @@ export default function Quiz() {
 
   const extractedPaths = [...allPaths, ...lastGroupPaths]
   const svgA = `<svg xmlns="http://www.w3.org/2000/svg" width='{109}' height='{109}' viewBox='0 0 109 109'>${firstGroup}${extractedPaths.join('\n')}</svg>`
-  console.log('object', svgA)
+  // console.log('object', svgA)
 
   return (
     <div className='relative flex flex-col pt-4 gap-4 items-center justify-stretch min-h-screen bg-gradient-to-b from-red-100 to-pink-300'>
